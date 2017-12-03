@@ -7,8 +7,28 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <form action="" (ngSubmit)="addItem()" #form="ngForm">
+    <ion-list>
+        <ion-item>
+          <ion-label floating>Price</ion-label>
+          <ion-input required type="number" name="price" min="0" [(ngModel)]="expense.price"></ion-input>
+        </ion-item>
+      
+        <ion-item>
+          <ion-label floating>Note</ion-label>
+          <ion-input required type="text" name="note" [(ngModel)]="expense.note"></ion-input>
+        </ion-item>
+      </ion-list>
+      <button type="submit" [disabled]="form.invalid" ion-button color="primary">Add</button>      
+  </form>
+
+  <h2>List of Data</h2>
+
+  <div *ngFor="let item of expenses | async">
+    <h4>{{item.price}}</h4>
+    <p>{{item.note}}</p>
+    <button type="button" class="btn " (click)="update(item)">Update</button>
+    <button type="button" class="btn " (click)="delete()">Delete</button>
+    {{item | json}}
+  </div>
 </ion-content>
