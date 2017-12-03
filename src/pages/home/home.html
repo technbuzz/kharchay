@@ -13,10 +13,20 @@
           <ion-label floating>Price</ion-label>
           <ion-input required type="number" name="price" min="0" [(ngModel)]="expense.price"></ion-input>
         </ion-item>
+
+        <ion-item>
+          <ion-label  floating>Toppings</ion-label>
+          <ion-select interface="popover" required name="category" [(ngModel)]="expense.category">
+            <ion-option>Food</ion-option>
+            <ion-option>Transport</ion-option>
+            <ion-option>Bills</ion-option>
+            <ion-option>Medicine</ion-option>
+          </ion-select>
+        </ion-item>
       
         <ion-item>
           <ion-label floating>Note</ion-label>
-          <ion-input required type="text" name="note" [(ngModel)]="expense.note"></ion-input>
+          <ion-input type="text" name="note" [(ngModel)]="expense.note"></ion-input>
         </ion-item>
       </ion-list>
       <button type="submit" [disabled]="form.invalid" ion-button color="primary">Add</button>      
