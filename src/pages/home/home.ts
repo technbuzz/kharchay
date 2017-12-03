@@ -13,7 +13,8 @@ export class HomePage implements OnInit {
   
   expense = {
     price: '',
-    note: ''
+    note: '',
+    category: ''
   };
   expCollRef: AngularFirestoreCollection<any> = this.afs.collection('expense');
   expenses: Observable<Expense[]>;
