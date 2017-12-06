@@ -14,5 +14,7 @@
 
 
 <ion-content padding>
-
+  <div *ngFor="let item of expenses$ | async">
+    {{item|json}}
+  </div>
 </ion-content>
