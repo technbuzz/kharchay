@@ -25,7 +25,6 @@ export class HomePage implements OnInit {
   }
   
   ngOnInit(): void {
-    this.afs.collection('expense', ref => ref.where('category','==','Food'));
     this.expenses = this.expCollRef.valueChanges(); 
   }
 
@@ -55,6 +54,10 @@ export class HomePage implements OnInit {
 
   public delete(){
     this.expCollRef.doc('yourid').delete();
+  }
+
+  public search(){
+    this.navCtrl.push('SearchPage')
   }
 
 }
