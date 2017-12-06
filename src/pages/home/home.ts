@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs/Observable';
 
 import { Expense } from "./expense.model";
+import { firestore } from 'firebase/app';
 
 @Component({
   selector: 'page-home',
@@ -24,14 +25,16 @@ export class HomePage implements OnInit {
   }
   
   ngOnInit(): void {
-    this .expenses = this.expCollRef.valueChanges();
+    this.afs.collection('expense', ref => ref.where('category','==','Food'));
+    this.expenses = this.expCollRef.valueChanges(); 
   }
-
 
   public addItem(){
     this.expCollRef.add({
       price: this.expense.price,
-      note: this.expense.note
+      note: this.expense.note,
+      category: this.expense.category,
+      date: new Date()
     }).then((docRef)=>{
       this.expCollRef.doc(docRef.id).update({
         id: docRef.id

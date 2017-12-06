@@ -3,6 +3,6 @@ export interface Expense {
   category: string,
   note?: string,
   price: number,
-  dateCreated?: Date,
-  dateModified?: Date
+  dateCreated: string,
+  dateModified?: string
 }
