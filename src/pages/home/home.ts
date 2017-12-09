@@ -37,8 +37,6 @@ export class HomePage implements OnInit {
 
   ionViewDidLoad(){
     this.maxDate = `${this.cdo.getFullYear()}-${this.padded(this.cdo.getMonth()+1)}-${this.padded(this.cdo.getDate())}`
-    console.log(this.maxDate);
-    console.log(typeof this.maxDate);
     
   }
 
