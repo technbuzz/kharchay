@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs/Observable';
 
 import { Expense } from "./expense.model";
+import { categories } from "../../shared/categories";
 import { firestore } from 'firebase/app';
 
 @Component({
@@ -17,10 +18,12 @@ export class HomePage implements OnInit {
     note: '',
     category: ''
   };
+  categories = [];
   expCollRef: AngularFirestoreCollection<any> = this.afs.collection('expense');
   expenses: Observable<Expense[]>;
   
   constructor(public navCtrl: NavController, public afs: AngularFirestore) {
+    Object.assign(this.categories, categories);
     
   }
   
@@ -28,7 +31,14 @@ export class HomePage implements OnInit {
     this.expenses = this.expCollRef.valueChanges(); 
   }
 
+  ionViewDidLoad(){
+    console.log(this);
+    
+  }
+
   public addItem(){
+    console.log(this.expense.category);
+    return false;
     this.expCollRef.add({
       price: this.expense.price,
       note: this.expense.note,
