@@ -16,6 +16,11 @@
           <ion-label floating>Price</ion-label>
           <ion-input required type="number" name="price" min="0" [(ngModel)]="expense.price"></ion-input>
         </ion-item>
+        <ion-item>MMM DD, YYYY HH:mm
+          <ion-label floating>Start Time</ion-label>
+          <ion-datetime name="createdAt" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm" [(ngModel)]="expense.createdAt" [max]="maxDate" 
+          ></ion-datetime>
+        </ion-item>
 
         <ion-item>
           <ion-label  floating>Toppings</ion-label>
