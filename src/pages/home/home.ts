@@ -16,8 +16,12 @@ export class HomePage implements OnInit {
   expense = {
     price: '',
     note: '',
-    category: ''
+    category: '',
+    createdAt: new Date().toISOString()
   };
+
+  cdo = new Date().toISOString();
+  maxDate: string;
   categories = [];
   expCollRef: AngularFirestoreCollection<any> = this.afs.collection('expense');
   expenses: Observable<Expense[]>;
@@ -32,25 +36,32 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidLoad(){
-    console.log(this);
+    // this.maxDate = `${this.cdo.getFullYear()}-${this.padded(this.cdo.getMonth()+1)}-${this.padded(this.cdo.getDate())}`
+    console.log(this.maxDate);
+    console.log(typeof this.maxDate);
     
   }
 
   public addItem(){
-    console.log(this.expense.category);
-    return false;
-    this.expCollRef.add({
-      price: this.expense.price,
-      note: this.expense.note,
-      category: this.expense.category,
-      date: new Date()
-    }).then((docRef)=>{
-      this.expCollRef.doc(docRef.id).update({
-        id: docRef.id
-      })      
-    }).catch((err)=>{
-      console.log(err);
-    })
+    console.log(this.expense);
+    
+    // this.expCollRef.add({
+    //   price: this.expense.price,
+    //   note: this.expense.note,
+    //   category: this.expense.category,
+    //   createdAt: this.expense.createdAt
+    // }).then((docRef)=>{
+    //   this.expCollRef.doc(docRef.id).update({
+    //     id: docRef.id
+    //   })      
+    // }).catch((err)=>{
+    //   console.log(err);
+    // })
+  }
+
+  private padded(value:number){
+    let input = value.toString();
+    return (input.length < 2) ? `0${value}` : value;
   }
 
   public update(expense: Expense){
