@@ -3,13 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { Expense } from '../home/expense.model';
-
-/**
- * Generated class for the SearchPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { categories } from "../../shared/categories";
 
 @IonicPage({})
 @Component({

@@ -20,11 +20,7 @@
         <ion-item>
           <ion-label  floating>Toppings</ion-label>
           <ion-select interface="popover" required name="category" [(ngModel)]="expense.category">
-            <ion-option>Food</ion-option>
-            <ion-option>Entertainment</ion-option>
-            <ion-option>Transport</ion-option>
-            <ion-option>Bills</ion-option>
-            <ion-option>Medicine</ion-option>
+            <ion-option [value]="cat" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
           </ion-select>
         </ion-item>
       
