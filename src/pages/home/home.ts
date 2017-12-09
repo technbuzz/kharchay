@@ -40,21 +40,19 @@ export class HomePage implements OnInit {
     
   }
 
-  public addItem(){
-    console.log(this.expense);
-    
-    // this.expCollRef.add({
-    //   price: this.expense.price,
-    //   note: this.expense.note,
-    //   category: this.expense.category,
-    //   createdAt: this.expense.createdAt
-    // }).then((docRef)=>{
-    //   this.expCollRef.doc(docRef.id).update({
-    //     id: docRef.id
-    //   })      
-    // }).catch((err)=>{
-    //   console.log(err);
-    // })
+  public addItem(){    
+    this.expCollRef.add({
+      price: this.expense.price,
+      note: this.expense.note,
+      category: this.expense.category,
+      createdAt: this.expense.createdAt
+    }).then((docRef)=>{
+      this.expCollRef.doc(docRef.id).update({
+        id: docRef.id
+      })      
+    }).catch((err)=>{
+      console.log(err);
+    })
   }
 
   private padded(value:number){
