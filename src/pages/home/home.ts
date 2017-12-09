@@ -20,7 +20,7 @@ export class HomePage implements OnInit {
     createdAt: new Date().toISOString()
   };
 
-  cdo = new Date().toISOString();
+  cdo = new Date();
   maxDate: string;
   categories = [];
   expCollRef: AngularFirestoreCollection<any> = this.afs.collection('expense');
@@ -36,7 +36,7 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidLoad(){
-    // this.maxDate = `${this.cdo.getFullYear()}-${this.padded(this.cdo.getMonth()+1)}-${this.padded(this.cdo.getDate())}`
+    this.maxDate = `${this.cdo.getFullYear()}-${this.padded(this.cdo.getMonth()+1)}-${this.padded(this.cdo.getDate())}`
     console.log(this.maxDate);
     console.log(typeof this.maxDate);
     
