@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content padding>
-  <form action="" (ngSubmit)="addItem()" #form="ngForm">
+  <form action="" (ngSubmit)="addItem(form)" #form="ngForm">
     <ion-list>
         <ion-item>
           <ion-label floating>Price</ion-label>
@@ -18,12 +18,12 @@
         </ion-item>
         <ion-item>MMM DD, YYYY HH:mm
           <ion-label floating>Start Time</ion-label>
-          <ion-datetime name="createdAt" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm" [(ngModel)]="expense.createdAt" [max]="maxDate" 
+          <ion-datetime name="date" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm" [(ngModel)]="expense.date" [max]="maxDate" 
           ></ion-datetime>
         </ion-item>
 
         <ion-item>
-          <ion-label  floating>Toppings</ion-label>
+          <ion-label  floating>Choose Category</ion-label>
           <ion-select interface="popover" required name="category" [(ngModel)]="expense.category">
             <ion-option [value]="cat" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
           </ion-select>
@@ -39,11 +39,13 @@
 
   <h2>List of Data</h2>
 
-  <div *ngFor="let item of expenses | async">
-    <h4>{{item.price}}</h4>
-    <p>{{item.note}}</p>
-    <button type="button" class="btn " (click)="update(item)">Update</button>
-    <button type="button" class="btn " (click)="delete()">Delete</button>
-    {{item | json}}
-  </div>
+  <ion-list>
+    <ion-item *ngFor="let item of expenses | async">
+      <h2>{{item.price}}</h2>
+      <ion-badge>{{item.category}}</ion-badge>
+      <p>{{item.note}}</p>
+      <p item-end>{{item.date | date}}</p>
+    </ion-item>
+  </ion-list>
+
 </ion-content>
