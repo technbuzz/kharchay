@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Expense } from "./expense.model";
 import { categories } from "../../shared/categories";
 import { firestore } from 'firebase/app';
+import { NgForm } from '@angular/forms/src/directives/ng_form';
 
 @Component({
   selector: 'page-home',
@@ -13,17 +14,18 @@ import { firestore } from 'firebase/app';
 })
 export class HomePage implements OnInit {
   
+
   expense = {
     price: '',
     note: '',
     category: '',
-    createdAt: new Date().toISOString()
+    date: new Date().toISOString()
   };
 
   cdo = new Date();
   maxDate: string;
   categories = [];
-  expCollRef: AngularFirestoreCollection<any> = this.afs.collection('expense');
+  expCollRef: AngularFirestoreCollection<any> = this.afs.collection('expense', ref => ref.orderBy('date'));
   expenses: Observable<Expense[]>;
   
   constructor(public navCtrl: NavController, public afs: AngularFirestore) {
@@ -32,6 +34,7 @@ export class HomePage implements OnInit {
   }
   
   ngOnInit(): void {
+    
     this.expenses = this.expCollRef.valueChanges(); 
   }
 
@@ -40,13 +43,15 @@ export class HomePage implements OnInit {
     
   }
 
-  public addItem(){    
+  public addItem(form:NgForm){ 
+
     this.expCollRef.add({
       price: this.expense.price,
       note: this.expense.note,
       category: this.expense.category,
-      createdAt: this.expense.createdAt
+      date: new Date(this.expense.date)
     }).then((docRef)=>{
+      form.reset();
       this.expCollRef.doc(docRef.id).update({
         id: docRef.id
       })      

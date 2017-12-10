@@ -14,7 +14,26 @@
 
 
 <ion-content padding>
-  <div *ngFor="let item of expenses$ | async">
-    {{item|json}}
-  </div>
+  <ion-list>
+    <ion-item>MMM DD, YYYY HH:mm
+      <ion-label floating>Start Time</ion-label>
+      <ion-datetime (ionChange)="loadResults()" name="createdAt" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm"
+        [(ngModel)]="searchDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Choose Category</ion-label>
+      <ion-select interface="popover" required name="category" [(ngModel)]="category">
+        <ion-option [value]="cat" (ionSelect)="loadResults()" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item *ngFor="let item of expenses$ | async">
+      <h2>{{item.price}}</h2>
+      <ion-badge>{{item.category}}</ion-badge>
+      <p>{{item.note}}</p>
+      <p item-end>{{item.date | date}}</p>
+    </ion-item>
+  </ion-list>
 </ion-content>
