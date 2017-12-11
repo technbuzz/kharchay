@@ -34,7 +34,9 @@
           <ion-input type="text" name="note" [(ngModel)]="expense.note"></ion-input>
         </ion-item>
       </ion-list>
-      <button type="submit" [disabled]="form.invalid" ion-button color="primary">Add</button>      
+      <button type="submit" [disabled]="form.invalid" *ngIf="!isWorking" ion-button color="primary">Add</button>
+      <button type="submit" [disabled]="true" *ngIf='isWorking' ion-button color="primary">Adding...</button>
+
   </form>
 
   <h2>List of Data</h2>

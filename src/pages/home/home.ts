@@ -22,10 +22,11 @@ export class HomePage implements OnInit {
     date: new Date().toISOString()
   };
 
+  isWorking: boolean = false;
   cdo = new Date();
   maxDate: string;
   categories = [];
-  expCollRef: AngularFirestoreCollection<any> = this.afs.collection('expense', ref => ref.orderBy('date'));
+  expCollRef: AngularFirestoreCollection<any> = this.afs.collection('expense', ref => ref.orderBy('date','desc'));
   expenses: Observable<Expense[]>;
   
   constructor(public navCtrl: NavController, public afs: AngularFirestore) {
@@ -44,7 +45,7 @@ export class HomePage implements OnInit {
   }
 
   public addItem(form:NgForm){ 
-
+    this.isWorking = true;
     this.expCollRef.add({
       price: this.expense.price,
       note: this.expense.note,
@@ -52,10 +53,12 @@ export class HomePage implements OnInit {
       date: new Date(this.expense.date)
     }).then((docRef)=>{
       form.reset();
+      this.isWorking = false;
       this.expCollRef.doc(docRef.id).update({
         id: docRef.id
       })      
     }).catch((err)=>{
+      this.isWorking = false;
       console.log(err);
     })
   }
