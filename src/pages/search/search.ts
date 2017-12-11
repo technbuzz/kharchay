@@ -11,7 +11,8 @@ import { categories } from "../../shared/categories";
   templateUrl: 'search.html',
 })
 export class SearchPage {
-  
+
+  loading:boolean = false;
   categories: any = [];
   category;
 
@@ -19,19 +20,25 @@ export class SearchPage {
   expRef: AngularFirestoreCollection<any>;
   expenses$: Observable<Expense[]>;
 
+  total: number = 0;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public afs: AngularFirestore) {
     Object.assign(this.categories, categories);
   }
 
   ionViewDidLoad() {
   }
-  
-  public loadResults(){
-    console.log('Loading Data');
-    
-    this.expRef = this.afs.collection('expense', ref => ref.where('category','==', this.category));     
+
+  public loadResults() {
+    this.loading = true;
+    this.expRef = this.afs.collection('expense', ref => ref.where('category', '==', this.category));
     this.expenses$ = this.expRef.valueChanges();
-
+    
+    this.expenses$.forEach(values => {
+      this.total = values.reduce((prev, current, ) => {
+        return prev + Number(current.price);
+      }, 0)
+    });
+    this.loading = false;
   }
-
 }

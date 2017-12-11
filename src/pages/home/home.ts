@@ -22,6 +22,7 @@ export class HomePage implements OnInit {
     date: new Date().toISOString()
   };
 
+  total:number = 0;
   isWorking: boolean = false;
   cdo = new Date();
   maxDate: string;
@@ -31,12 +32,17 @@ export class HomePage implements OnInit {
   
   constructor(public navCtrl: NavController, public afs: AngularFirestore) {
     Object.assign(this.categories, categories);
-    
   }
   
   ngOnInit(): void {
-    
+
     this.expenses = this.expCollRef.valueChanges(); 
+
+    this.expenses.forEach(values => {
+      this.total = values.reduce((prev, current, ) => {
+        return prev + Number(current.price);
+      }, 0)
+    });
   }
 
   ionViewDidLoad(){

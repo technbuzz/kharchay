@@ -39,10 +39,9 @@
 
   </form>
 
-  <h2>List of Data</h2>
-
+  <h2>List of Data - {{total}}</h2>
   <ion-list>
-    <ion-item *ngFor="let item of expenses | async">
+    <ion-item no-padding  *ngFor="let item of expenses | async">
       <h2>{{item.price}}</h2>
       <ion-badge>{{item.category}}</ion-badge>
       <p>{{item.note}}</p>
