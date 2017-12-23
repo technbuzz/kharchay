@@ -5,5 +5,6 @@ export const categories = [
   'food',
   'health',
   'transport',
-  'toiletry'
+  'toiletry',
+  'other'
 ]
