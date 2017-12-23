@@ -4,6 +4,7 @@ export const categories = [
   'entertainment',
   'food',
   'health',
+  'snacks',
   'transport',
   'toiletry',
   'other'
