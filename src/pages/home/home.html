@@ -35,9 +35,11 @@
         </ion-item>
       </ion-list>
       <button type="submit" [disabled]="form.invalid" *ngIf="!isWorking" ion-button color="primary">Add</button>
-      <button type="submit" [disabled]="true" *ngIf='isWorking' ion-button color="primary">Adding...</button>
+      <button type="button" [ladda]="true" *ngIf='isWorking' ion-button color="primary">Adding...</button>
 
-  </form>
+      
+      
+    </form>
 
   <h2>List of Data - {{total}}</h2>
   <ion-list>
