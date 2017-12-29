@@ -58,7 +58,7 @@ export class HomePage implements OnInit {
       category: this.expense.category,
       date: new Date(this.expense.date)
     }).then((docRef)=>{
-      form.reset();
+      this.resetFields();
       this.isWorking = false;
       this.expCollRef.doc(docRef.id).update({
         id: docRef.id
@@ -89,6 +89,11 @@ export class HomePage implements OnInit {
 
   public search(){
     this.navCtrl.push('SearchPage')
+  }
+
+  resetFields(){
+    this.expense.price = '';
+    this.expense.note = '';
   }
 
 }
