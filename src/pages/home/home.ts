@@ -6,7 +6,10 @@ import { Observable } from 'rxjs/Observable';
 import { Expense } from "./expense.model";
 import { categories } from "../../shared/categories";
 import { firestore } from 'firebase/app';
-import { NgForm } from '@angular/forms/src/directives/ng_form';
+import { NgForm } from '@angular/forms';
+
+import format from 'date-fns/format';
+import startOfMonth from 'date-fns/start_of_month';
 
 @Component({
   selector: 'page-home',
@@ -14,7 +17,9 @@ import { NgForm } from '@angular/forms/src/directives/ng_form';
 })
 export class HomePage implements OnInit {
   
-
+  cdo = new Date();
+  currentMonth = format(new Date(), 'MMMM');
+  startOfMonth = startOfMonth(this.cdo);
   expense = {
     price: '',
     note: '',
@@ -22,12 +27,15 @@ export class HomePage implements OnInit {
     date: new Date().toISOString()
   };
 
+  
   total:number = 0;
   isWorking: boolean = false;
-  cdo = new Date();
   maxDate: string;
   categories = [];
-  expCollRef: AngularFirestoreCollection<any> = this.afs.collection('expense', ref => ref.orderBy('date','desc'));
+  expCollRef: AngularFirestoreCollection<any> = this.afs
+    .collection('expense', ref => ref.orderBy('date','desc')
+    .where("date",">=",this.startOfMonth)
+  );
   expenses: Observable<Expense[]>;
   
   constructor(public navCtrl: NavController, public afs: AngularFirestore) {
@@ -35,9 +43,7 @@ export class HomePage implements OnInit {
   }
   
   ngOnInit(): void {
-
     this.expenses = this.expCollRef.valueChanges(); 
-
     this.expenses.forEach(values => {
       this.total = values.reduce((prev, current, ) => {
         return prev + Number(current.price);
@@ -46,8 +52,7 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidLoad(){
-    this.maxDate = `${this.cdo.getFullYear()}-${this.padded(this.cdo.getMonth()+1)}-${this.padded(this.cdo.getDate())}`
-    
+    this.maxDate = this.cdo.toISOString().split('T')[0];    
   }
 
   public addItem(form:NgForm){ 
@@ -67,11 +72,6 @@ export class HomePage implements OnInit {
       this.isWorking = false;
       console.log(err);
     })
-  }
-
-  private padded(value:number){
-    let input = value.toString();
-    return (input.length < 2) ? `0${value}` : value;
   }
 
   public update(expense: Expense){
