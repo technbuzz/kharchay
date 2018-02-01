@@ -12,40 +12,40 @@
 <ion-content padding>
   <form action="" (ngSubmit)="addItem(form)" #form="ngForm">
     <ion-list>
-        <ion-item>
-          <ion-label floating>Price</ion-label>
-          <ion-input required type="number" name="price" min="0" [(ngModel)]="expense.price"></ion-input>
-        </ion-item>
-        <ion-item (ionDrag)="logDrag($event)">
-          <ion-label floating>Date</ion-label>
-          <ion-datetime name="date" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm" [(ngModel)]="expense.date" [max]="maxDate" 
-          ></ion-datetime>
-        </ion-item>
+      <ion-item>
+        <ion-label floating>Price</ion-label>
+        <ion-input required type="number" name="price" min="0" [(ngModel)]="expense.price"></ion-input>
+      </ion-item>
+      <ion-item (ionDrag)="logDrag($event)">
+        <ion-label floating>Date</ion-label>
+        <ion-datetime #expenseDate (swipeleft)="subtractDay()" (swiperight)="addDay()" name="date" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm"
+          [(ngModel)]="expense.date" [max]="maxDate"></ion-datetime>
+      </ion-item>
 
-        <ion-item-sliding (ionDrag)="logDrag($event)">
-          <ion-item>
-            <ion-label  floating>Choose Category</ion-label>
-            <ion-select interface="popover" required name="category" [(ngModel)]="expense.category">
-              <ion-option [value]="cat" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
-            </ion-select>
-          </ion-item>
-        </ion-item-sliding>
-      
+      <ion-item-sliding (ionDrag)="logDrag($event)">
         <ion-item>
-          <ion-label floating>Note</ion-label>
-          <ion-input type="text" name="note" [(ngModel)]="expense.note"></ion-input>
+          <ion-label floating>Choose Category</ion-label>
+          <ion-select interface="popover" required name="category" [(ngModel)]="expense.category">
+            <ion-option [value]="cat" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
+          </ion-select>
         </ion-item>
-      </ion-list>
-      <button type="submit" [disabled]="form.invalid" [ladda]="isWorking" ion-button color="primary">Add</button>
-      <!-- <button type="button" [ladda]="false" *ngIf='isWorking' ion-button color="primary">Adding...</button> -->
+      </ion-item-sliding>
 
-      
-      
-    </form>
+      <ion-item>
+        <ion-label floating>Note</ion-label>
+        <ion-input type="text" name="note" [(ngModel)]="expense.note"></ion-input>
+      </ion-item>
+    </ion-list>
+    <button type="submit" [disabled]="form.invalid" [ladda]="isWorking" ion-button color="primary">Add</button>
+    <!-- <button type="button" [ladda]="false" *ngIf='isWorking' ion-button color="primary">Adding...</button> -->
+
+
+
+  </form>
 
   <h2>{{this.currentMonth}} - {{total}}</h2>
   <ion-list>
-    <ion-item no-padding  *ngFor="let item of expenses | async">
+    <ion-item no-padding *ngFor="let item of expenses | async">
       <h2>{{item.price}}</h2>
       <ion-badge>{{item.category}}</ion-badge>
       <p>{{item.note}}</p>
