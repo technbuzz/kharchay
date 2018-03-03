@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NavController, DateTime } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 
@@ -9,6 +9,9 @@ import { firestore } from 'firebase/app';
 import { NgForm } from '@angular/forms';
 
 import format from 'date-fns/format';
+import addDays from 'date-fns/add_days';
+import subDays from 'date-fns/sub_days';
+import isAfter from 'date-fns/is_after';
 import startOfMonth from 'date-fns/start_of_month';
 
 @Component({
@@ -17,6 +20,7 @@ import startOfMonth from 'date-fns/start_of_month';
 })
 export class HomePage implements OnInit {
   
+  @ViewChild('expenseDate') expenseDate: DateTime;
   cdo = new Date();
   currentMonth = format(new Date(), 'MMMM');
   startOfMonth = startOfMonth(this.cdo);
@@ -27,7 +31,6 @@ export class HomePage implements OnInit {
     date: new Date().toISOString()
   };
 
-  
   total:number = 0;
   isWorking: boolean = false;
   maxDate: string;
@@ -50,7 +53,7 @@ export class HomePage implements OnInit {
       }, 0)
     });
   }
-
+  
   ionViewDidLoad(){
     this.maxDate = this.cdo.toISOString().split('T')[0];    
   }
@@ -94,6 +97,25 @@ export class HomePage implements OnInit {
   resetFields(){
     this.expense.price = '';
     this.expense.note = '';
+  }
+
+  public addDay(){
+
+    let tempDate = this.expense.date;
+    let nextDay = addDays(tempDate, 1);
+    
+    if(isAfter(nextDay, new Date())) return;
+    this.expenseDate.setValue(addDays(tempDate, 1).toISOString());
+    
+  }
+  
+  public subtractDay(){
+    console.log('subractday');
+    
+    let tempDate = this.expense.date;
+    this.expenseDate.setValue(subDays(tempDate, 1).toISOString());
+    console.log(this.expense.date);
+    
   }
 
 }
