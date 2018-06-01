@@ -7,26 +7,48 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-list>
-    <ion-item>MMM DD, YYYY HH:mm
-      <ion-label floating>Start Time</ion-label>
-      <ion-datetime (ionChange)="loadResults()" name="createdAt" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm"
-        [(ngModel)]="searchDate"></ion-datetime>
-    </ion-item>
+<ion-content>
+  <ion-segment [(ngModel)]="searchType">
+    <ion-segment-button value="month">
+      Month
+    </ion-segment-button>
+    <ion-segment-button value="range">
+      Range
+    </ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="searchType">
+    <ion-list *ngSwitchCase="'month'" no-margin>
+      <ion-item>
+        <ion-label floating>Month</ion-label>
+        <ion-input type="text" (ionChange)="loadResults()" name="month" [(ngModel)]="filter.month"></ion-input>
+      </ion-item>
+    </ion-list>
+
+
+    <ion-list *ngSwitchCase="'range'" no-margin>
+      <ion-item>
+        <ion-label floating>Start Date</ion-label>
+        <ion-datetime (ionChange)="loadResults()" name="createdAt" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm"
+          [(ngModel)]="filter.startDate"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>End Date</ion-label>
+        <ion-datetime (ionChange)="loadResults()" name="createdAt" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm"
+          [(ngModel)]="filter.endDate"></ion-datetime>
+      </ion-item>
+    </ion-list>
+
     <ion-item>
       <ion-label floating>Choose Category</ion-label>
-      <ion-select interface="popover" required name="category" [(ngModel)]="category">
+      <ion-select interface="popover" required name="category" [(ngModel)]="filter.category">
         <ion-option [value]="cat" (ionSelect)="loadResults()" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
       </ion-select>
     </ion-item>
-  </ion-list>
+  </div>
 
-  <hr>
-  <h4>Total: {{total}}</h4>
-  <hr>
-
-  <ion-list>
+  
+  <ion-list padding-horizontal>
+      <h4>Total: {{total}}</h4>
     <ion-item no-padding *ngFor="let item of expenses$ | async">
       <h2>{{item.price}}</h2>
       <ion-badge>{{item.category}}</ion-badge>
