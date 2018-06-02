@@ -7,6 +7,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Expense } from '../home/expense.model';
 import { categories } from '../../shared/categories';
+import { startOfMonth, endOfMonth } from 'date-fns';
 
 @IonicPage({})
 @Component({
@@ -16,13 +17,15 @@ import { categories } from '../../shared/categories';
 export class SearchPage {
   loading: boolean = false;
   categories: any = [];
-  searchType: string = 'month';
+  searchType: string = 'basic';
   filter = {
     startDate: '',
     endDate: '',
     category: '',
     month: ''
   };
+
+  basic: string = '';
 
   expRef: AngularFirestoreCollection<any>;
   expenses$: Observable<Expense[]>;
@@ -39,15 +42,39 @@ export class SearchPage {
 
   ionViewDidLoad() {}
 
-  public loadResults() {
-    console.log(this.filter);
-    
+  public loadBasic() {
+    const basicStartMonth = startOfMonth(this.filter.month);
+    const basicEndMonth = endOfMonth(this.filter.month);
+
     this.loading = true;
     this.expRef = this.afs.collection('expense', ref =>
-      ref.where('category', '==', this.filter.category)
+      ref
+        .where('date', '>=', basicStartMonth)
+        .where('date', '<=', basicEndMonth)
     );
-    this.expenses$ = this.expRef.valueChanges();
 
+    // Finding Total
+    this.expenses$ = this.expRef.valueChanges();
+    this.expenses$.forEach(values => {
+      this.total = values.reduce((prev, current) => {
+        return prev + Number(current.price);
+      }, 0);
+    });
+
+
+  }
+
+  public loadResults() {
+    this.loading = true;
+    this.expRef = this.afs.collection('expense', ref =>
+      ref
+        .where('date', '>=', new Date(this.filter.startDate))
+        .where('date', '<=', new Date(this.filter.endDate))
+        .where('category', '==', this.filter.category)
+    );
+
+    // Finding Total
+    this.expenses$ = this.expRef.valueChanges();
     this.expenses$.forEach(values => {
       this.total = values.reduce((prev, current) => {
         return prev + Number(current.price);
