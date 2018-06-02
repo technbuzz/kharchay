@@ -9,6 +9,8 @@ import { AngularFireModule } from "angularfire2";
 import { AngularFirestoreModule } from "angularfire2/firestore";
 import { environment } from "../environments/environment";
 import { LaddaModule } from "angular2-ladda";
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -21,6 +23,7 @@ import { HomePage } from '../pages/home/home';
   imports: [
     BrowserModule,
     FormsModule,
+    NgxChartsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(),
     IonicModule.forRoot(MyApp),
