@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController, DateTime } from 'ionic-angular';
+import { NavController, DateTime, AlertController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 
@@ -41,7 +41,7 @@ export class HomePage implements OnInit {
   );
   expenses: Observable<Expense[]>;
   
-  constructor(public navCtrl: NavController, public afs: AngularFirestore) {
+  constructor(public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl:AlertController) {
     Object.assign(this.categories, categories);
   }
   
@@ -86,8 +86,26 @@ export class HomePage implements OnInit {
     }).catch(err => console.log(err))
   }
 
-  public delete(){
-    this.expCollRef.doc('yourid').delete();
+  public delete(item:Expense){
+    // this.expCollRef.doc('yourid').delete();
+    const confirm = this.alertCtrl.create({
+      subTitle: 'Do you really want to delete',
+      buttons: [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log(item);
+            this.expCollRef.doc(item.id).delete();
+          }
+
+        }
+      ]
+    })
+    confirm.present();
+
   }
 
   public search(){

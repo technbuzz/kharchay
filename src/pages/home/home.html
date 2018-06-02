@@ -45,12 +45,18 @@
 
   <h2>{{this.currentMonth}} - {{total}}</h2>
   <ion-list>
-    <ion-item no-padding *ngFor="let item of expenses | async">
-      <h2>{{item.price}}</h2>
-      <ion-badge>{{item.category}}</ion-badge>
-      <p>{{item.note}}</p>
-      <p item-end>{{item.date | date:"E, MMM d, y"}}</p>
-    </ion-item>
+    <ion-item-sliding *ngFor="let item of expenses | async">
+      <ion-item no-padding >
+        <h2>{{item.price}}</h2>
+        <ion-badge>{{item.category}}</ion-badge>
+        <p>{{item.note}}</p>
+        <p item-end>{{item.date | date:"E, MMM d, y"}}</p>
+      </ion-item>
+      <ion-item-options slide="right">
+        <button ion-button color="danger" (click)="delete(item)">Delete</button>
+      </ion-item-options>
+
+    </ion-item-sliding>
   </ion-list>
 
 </ion-content>
