@@ -40,6 +40,8 @@ export class SearchPage {
     Object.assign(this.categories, categories);
   }
 
+  
+
   ionViewDidLoad() {}
 
   public loadBasic() {
