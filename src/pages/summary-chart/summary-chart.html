@@ -9,4 +9,14 @@
 
 <ion-content padding>
   <p>In Development...</p>
+  <div style="display: block">
+    <canvas baseChart 
+    [data]="doughnutChartData" 
+    [options]="donutOptions"
+    [labels]="doughnutChartLabels" 
+    [chartType]="doughnutChartType" 
+    (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)"
+      ></canvas>
+  </div>
 </ion-content>
