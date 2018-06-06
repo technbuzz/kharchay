@@ -11,10 +11,10 @@ import { startOfMonth, endOfMonth } from 'date-fns';
 
 @IonicPage({})
 @Component({
-  selector: 'page-search',
-  templateUrl: 'search.html'
+  selector: 'page-filter',
+  templateUrl: 'filter.html'
 })
-export class SearchPage {
+export class FilterPage {
   loading: boolean = false;
   categories: any = [];
   searchType: string = 'basic';
@@ -63,10 +63,6 @@ export class SearchPage {
       }, 0);
     });
 
-    
-    
-  }
-  getItems(){
 
   }
 

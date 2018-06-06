@@ -1,0 +1,60 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Filter</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-segment [(ngModel)]="searchType">
+    <ion-segment-button value="basic">
+      Basic
+    </ion-segment-button>
+    <ion-segment-button value="advanced">
+      Advanced
+    </ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="searchType">
+    <ion-list *ngSwitchCase="'basic'" no-margin>
+      <ion-item>
+        <ion-label floating>Month</ion-label>
+        <ion-datetime (ionChange)="loadBasic()" name="month" displayFormat="MMM YYYY" pickerFormat="MMM YYYY"
+          [(ngModel)]="filter.month"></ion-datetime>
+      </ion-item>
+    </ion-list>
+
+
+    <ion-list *ngSwitchCase="'advanced'" no-margin>
+      <ion-item>
+        <ion-label floating>Start Date</ion-label>
+        <ion-datetime (ionChange)="loadResults()" name="startDate" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm"
+          [(ngModel)]="filter.startDate"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>End Date</ion-label>
+        <ion-datetime (ionChange)="loadResults()" name="endDate" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm"
+          [(ngModel)]="filter.endDate"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Choose Category</ion-label>
+        <ion-select interface="popover" required name="category" [(ngModel)]="filter.category">
+          <ion-option [value]="cat" (ionSelect)="loadResults()" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+  
+  <ion-list padding-horizontal>
+      <h4>Total: {{total}}</h4>
+    <ion-item no-padding *ngFor="let item of expenses$ | async">
+      <h2>{{item.price}}</h2>
+      <ion-badge>{{item.category}}</ion-badge>
+      <p>{{item.note}}</p>
+      <p item-end>{{item.date | date}}</p>
+    </ion-item>
+  </ion-list>
+</ion-content>
