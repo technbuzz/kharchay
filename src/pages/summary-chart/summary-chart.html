@@ -9,14 +9,10 @@
 
 <ion-content padding>
   <p>In Development...</p>
-  <div style="display: block">
-    <canvas baseChart 
-    [data]="doughnutChartData" 
-    [options]="donutOptions"
-    [labels]="doughnutChartLabels" 
-    [chartType]="doughnutChartType" 
-    (chartHover)="chartHovered($event)"
-      (chartClick)="chartClicked($event)"
-      ></canvas>
+  <!-- <p *ngIf="loading else view">Loading...</p> -->
+  <div #container>
+    <!-- <pie [doughnutChartData]="doughnutChartData" [doughnutChartLabels]="doughnutChartLabels"></pie> -->
   </div>
+
+
 </ion-content>
