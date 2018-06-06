@@ -19,6 +19,7 @@ import { PieComponent } from '../../components/pie/pie';
 export class SummaryChartPage {
   @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
   loading: boolean = true;
+  month = '';
   expRef: AngularFirestoreCollection<any>;
   expenses$: Observable<Expense[]>;
 
@@ -36,10 +37,6 @@ export class SummaryChartPage {
   }
   
   ionViewDidLoad() {
-    // console.log('this container', this.container);
-    
-
-    
     this.getCurrentMonthStats();
   }
 
@@ -56,12 +53,27 @@ export class SummaryChartPage {
   // Finding Total
     this.expenses$ = this.expRef.valueChanges();
     this.expenses$.forEach(values => {
-      this.total = values.reduce((prev, current) => {
-        return prev + Number(current.price);
-      }, 0);
       this.generateDataForChart(values);
     });
     this.loading = false;
+  }
+
+  loadBasic(){
+    const basicStartMonth = startOfMonth(this.month);
+    const basicEndMonth = endOfMonth(this.month);
+
+    this.loading = true;
+    this.expRef = this.afs.collection('expense', ref =>
+      ref
+        .where('date', '>=', basicStartMonth)
+        .where('date', '<=', basicEndMonth)
+    );
+
+    // Finding Total
+    this.expenses$ = this.expRef.valueChanges();
+    this.expenses$.forEach(values => {
+      this.generateDataForChart(values);
+    });
   }
 
   generateDataForChart(values) {
@@ -80,14 +92,10 @@ export class SummaryChartPage {
       
     });
 
+    this.container.clear();
     const factory = this.resolver.resolveComponentFactory(PieComponent);
     const componentRef = this.container.createComponent(factory);
     componentRef.instance.doughnutChartData = chartData;
     componentRef.instance.doughnutChartLabels = chartLabels;
-    
   }
-
-  chartHovered() {}
-
-  chartClicked() {}
 }
