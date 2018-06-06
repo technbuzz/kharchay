@@ -1,0 +1,19 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Summary</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding-vertical>
+  <ion-list>
+    <ion-item>
+      <ion-label stacked>Month</ion-label>
+      <ion-datetime (ionChange)="loadBasic()" name="month" displayFormat="MMM YYYY" pickerFormat="MMM YYYY" [(ngModel)]="month" placeholder="Select Month"></ion-datetime>
+    </ion-item>
+  </ion-list>
+  <!-- <p *ngIf="loading else view">Loading...</p> -->
+  <div #container></div>
+</ion-content>

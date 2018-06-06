@@ -20,6 +20,7 @@
   
   <ion-list padding-horizontal>
       <h4>Total: {{total}}</h4>
+      <button ion-button color="secondary" (click)="navCtrl.push('SummaryChartPage')">Show Chart</button>
     <ion-item no-padding *ngFor="let item of expenses$ | async">
       <h2>{{item.price}}</h2>
       <ion-badge>{{item.category}}</ion-badge>
