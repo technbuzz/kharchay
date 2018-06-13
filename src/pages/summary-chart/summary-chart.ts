@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentFactory } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {
   AngularFirestoreCollection,
@@ -8,7 +8,6 @@ import { Observable } from 'rxjs/Observable';
 import { Expense } from '../home/expense.model';
 import { startOfMonth, endOfMonth } from 'date-fns';
 import * as lodash from 'lodash';
-import { BaseChartDirective } from 'ng2-charts';
 import { PieComponent } from '../../components/pie/pie';
 
 @IonicPage()
@@ -59,6 +58,7 @@ export class SummaryChartPage {
   }
 
   loadBasic(){
+    //TODO: Merge this function with getCurrentMonthStats
     const basicStartMonth = startOfMonth(this.month);
     const basicEndMonth = endOfMonth(this.month);
 

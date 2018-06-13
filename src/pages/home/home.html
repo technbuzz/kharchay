@@ -41,6 +41,8 @@
     </ion-list>
     <button type="submit" [disabled]="form.invalid" [ladda]="isWorking" ion-button color="primary">Add</button>
     <!-- <button type="button" [ladda]="false" *ngIf='isWorking' ion-button color="primary">Adding...</button> -->
+    <button ion-button color="secondary" float-end (click)="navCtrl.push('SummaryChartPage')" type="button">Show Chart</button>
+
 
 
 
