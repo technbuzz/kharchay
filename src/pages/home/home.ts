@@ -31,6 +31,7 @@ export class HomePage implements OnInit {
     date: new Date().toISOString()
   };
 
+  showSubCategory: boolean = false;
   total:number = 0;
   isWorking: boolean = false;
   maxDate: string;
@@ -56,6 +57,10 @@ export class HomePage implements OnInit {
   
   ionViewDidLoad(){
     this.maxDate = this.cdo.toISOString().split('T')[0];    
+  }
+
+  populateSubCategory(category:Object){
+    console.log(category.hasOwnProperty('subCategory'))
   }
 
   public addItem(form:NgForm){ 

@@ -5,7 +5,7 @@
       <button ion-button icon-only (click)="navCtrl.push('FilterPage')" margin-right>
         <ion-icon name="funnel"></ion-icon>
       </button>
-      <button ion-button icon-only (click)="search()" >
+      <button ion-button icon-only (click)="search()">
         <ion-icon name="search"></ion-icon>
       </button>
     </ion-buttons>
@@ -25,14 +25,24 @@
           [(ngModel)]="expense.date" [max]="maxDate"></ion-datetime>
       </ion-item>
 
-      <ion-item-sliding (ionDrag)="logDrag($event)">
-        <ion-item>
-          <ion-label floating>Choose Category</ion-label>
-          <ion-select interface="popover" required name="category" [(ngModel)]="expense.category">
-            <ion-option [value]="cat" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
-          </ion-select>
-        </ion-item>
-      </ion-item-sliding>
+      <ion-grid no-padding>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label floating>Choose Category</ion-label>
+              <ion-select interface="popover" required name="category" (ionChange)="populateSubCategory(expense.category)" [(ngModel)]="expense.category">
+                <ion-option [value]="cat" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
+              </ion-select>
+            </ion-item>
+            <ion-item *ngIf="showSubCategory">
+              <ion-label floating>Choose Category</ion-label>
+              <ion-select interface="popover" required name="subCategory" [(ngModel)]="expense.category.subCategory">
+                <ion-option [value]="cat" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
       <ion-item>
         <ion-label floating>Note</ion-label>
@@ -51,7 +61,7 @@
   <h2>{{this.currentMonth}} - {{total}}</h2>
   <ion-list>
     <ion-item-sliding *ngFor="let item of expenses | async">
-      <ion-item no-padding >
+      <ion-item no-padding>
         <h2>{{item.price}}</h2>
         <ion-badge>{{item.category}}</ion-badge>
         <p>{{item.note}}</p>
