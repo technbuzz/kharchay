@@ -1,11 +1,11 @@
 export const categories = [
-  'bills',
-  'clothes',
-  'entertainment',
-  'food',
-  'health',
-  'snacks',
-  'transport',
-  'toiletry',
-  'other'
+  { title:'bills'},
+  { title:'clothes'},
+  { title:'entertainment'},
+  { title:'food', subCategory: ['breakfast','lunch','dinner']},
+  { title:'health'},
+  { title:'snacks'},
+  { title:'transport'},
+  { title:'toiletry'},
+  { title:'other'}
 ]

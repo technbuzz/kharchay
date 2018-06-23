@@ -57,6 +57,7 @@ export class SearchPage {
 
     // Finding Total
     this.expenses$ = this.expRef.valueChanges();
+    
     this.expenses$.forEach(values => {
       this.total = values.reduce((prev, current) => {
         return prev + Number(current.price);

@@ -13,6 +13,8 @@ import addDays from 'date-fns/add_days';
 import subDays from 'date-fns/sub_days';
 import isAfter from 'date-fns/is_after';
 import startOfMonth from 'date-fns/start_of_month';
+import { IExpense } from '../../shared/expense.interface';
+import { ICategory } from '../../shared/category.interface';
 
 @Component({
   selector: 'page-home',
@@ -24,17 +26,23 @@ export class HomePage implements OnInit {
   cdo = new Date();
   currentMonth = format(new Date(), 'MMMM');
   startOfMonth = startOfMonth(this.cdo);
-  expense = {
-    price: '',
+  expense:IExpense = {
+    price: null,
     note: '',
-    category: '',
+    category: null,
     date: new Date().toISOString()
   };
+  
+  
+  categories = [];
+  showSubCategory: boolean = false;
+  selectedSubCategory: '';
+  subCategories:ICategory;
 
   total:number = 0;
   isWorking: boolean = false;
   maxDate: string;
-  categories = [];
+
   expCollRef: AngularFirestoreCollection<any> = this.afs
     .collection('expense', ref => ref.orderBy('date','desc')
     .where("date",">=",this.startOfMonth)
@@ -52,18 +60,34 @@ export class HomePage implements OnInit {
         return prev + Number(current.price);
       }, 0)
     });
+
   }
   
   ionViewDidLoad(){
     this.maxDate = this.cdo.toISOString().split('T')[0];    
   }
 
+  populateSubCategory(category:ICategory){
+    if(category.hasOwnProperty('subCategory') && category.subCategory){
+      this.subCategories = category.subCategory;
+      this.showSubCategory = true;
+    } else {
+      this.showSubCategory = false;
+    }
+  }
+
+
+
   public addItem(form:NgForm){ 
+    console.log(this.expense);
+    console.log(this.selectedSubCategory);
+    
     this.isWorking = true;
     this.expCollRef.add({
       price: this.expense.price,
       note: this.expense.note,
       category: this.expense.category,
+      subCategory: this.selectedSubCategory,
       date: new Date(this.expense.date)
     }).then((docRef)=>{
       this.resetFields();
@@ -113,7 +137,7 @@ export class HomePage implements OnInit {
   }
 
   resetFields(){
-    this.expense.price = '';
+    this.expense.price = 0;
     this.expense.note = '';
   }
 
