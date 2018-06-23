@@ -39,6 +39,8 @@ export class HomePage implements OnInit {
   isWorking: boolean = false;
   maxDate: string;
   categories = [];
+  subCategories:ICategory;
+
   expCollRef: AngularFirestoreCollection<any> = this.afs
     .collection('expense', ref => ref.orderBy('date','desc')
     .where("date",">=",this.startOfMonth)
@@ -64,12 +66,17 @@ export class HomePage implements OnInit {
   }
 
   populateSubCategory(category:ICategory){
-    debugger;
-    console.log(category);
+    // debugger;
     if(category.hasOwnProperty('subCategory') && category.subCategory){
       console.log(category.subCategory)
+      this.subCategories = category.subCategory;
+      this.showSubCategory = true;
+    } else {
+      this.showSubCategory = false;
     }
   }
+
+
 
   public addItem(form:NgForm){ 
     this.isWorking = true;
@@ -126,7 +133,7 @@ export class HomePage implements OnInit {
   }
 
   resetFields(){
-    this.expense.price = '';
+    this.expense.price = 0;
     this.expense.note = '';
   }
 
