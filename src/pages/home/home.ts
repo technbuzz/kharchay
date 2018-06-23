@@ -27,19 +27,21 @@ export class HomePage implements OnInit {
   currentMonth = format(new Date(), 'MMMM');
   startOfMonth = startOfMonth(this.cdo);
   expense:IExpense = {
-    price: 0,
+    price: null,
     note: '',
-    category: {title:''},
+    category: null,
     date: new Date().toISOString()
   };
   
-
+  
+  categories = [];
   showSubCategory: boolean = false;
+  selectedSubCategory: '';
+  subCategories:ICategory;
+
   total:number = 0;
   isWorking: boolean = false;
   maxDate: string;
-  categories = [];
-  subCategories:ICategory;
 
   expCollRef: AngularFirestoreCollection<any> = this.afs
     .collection('expense', ref => ref.orderBy('date','desc')
@@ -66,9 +68,7 @@ export class HomePage implements OnInit {
   }
 
   populateSubCategory(category:ICategory){
-    // debugger;
     if(category.hasOwnProperty('subCategory') && category.subCategory){
-      console.log(category.subCategory)
       this.subCategories = category.subCategory;
       this.showSubCategory = true;
     } else {
@@ -79,11 +79,15 @@ export class HomePage implements OnInit {
 
 
   public addItem(form:NgForm){ 
+    console.log(this.expense);
+    console.log(this.selectedSubCategory);
+    
     this.isWorking = true;
     this.expCollRef.add({
       price: this.expense.price,
       note: this.expense.note,
       category: this.expense.category,
+      subCategory: this.selectedSubCategory,
       date: new Date(this.expense.date)
     }).then((docRef)=>{
       this.resetFields();

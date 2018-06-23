@@ -1,8 +1,7 @@
-export interface Expense {
+import { IExpense } from "../../shared/expense.interface";
+
+export interface Expense extends IExpense {
   id?: string,
-  category: string,
-  note?: string,
-  price: number,
-  date: string,
   dateModified?: string
 }
+
