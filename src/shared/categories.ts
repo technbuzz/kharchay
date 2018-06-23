@@ -7,5 +7,5 @@ export const categories = [
   { title:'snacks'},
   { title:'transport'},
   { title:'toiletry'},
-  { title:'o}ther'
+  { title:'other'}
 ]

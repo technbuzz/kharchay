@@ -13,6 +13,8 @@ import addDays from 'date-fns/add_days';
 import subDays from 'date-fns/sub_days';
 import isAfter from 'date-fns/is_after';
 import startOfMonth from 'date-fns/start_of_month';
+import { IExpense } from '../../shared/expense.interface';
+import { ICategory } from '../../shared/category.interface';
 
 @Component({
   selector: 'page-home',
@@ -24,12 +26,13 @@ export class HomePage implements OnInit {
   cdo = new Date();
   currentMonth = format(new Date(), 'MMMM');
   startOfMonth = startOfMonth(this.cdo);
-  expense = {
-    price: '',
+  expense:IExpense = {
+    price: 0,
     note: '',
-    category: '',
+    category: {title:''},
     date: new Date().toISOString()
   };
+  
 
   showSubCategory: boolean = false;
   total:number = 0;
@@ -53,14 +56,19 @@ export class HomePage implements OnInit {
         return prev + Number(current.price);
       }, 0)
     });
+
   }
   
   ionViewDidLoad(){
     this.maxDate = this.cdo.toISOString().split('T')[0];    
   }
 
-  populateSubCategory(category:Object){
-    console.log(category.hasOwnProperty('subCategory'))
+  populateSubCategory(category:ICategory){
+    debugger;
+    console.log(category);
+    if(category.hasOwnProperty('subCategory') && category.subCategory){
+      console.log(category.subCategory)
+    }
   }
 
   public addItem(form:NgForm){ 

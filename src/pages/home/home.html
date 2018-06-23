@@ -31,7 +31,7 @@
             <ion-item>
               <ion-label floating>Choose Category</ion-label>
               <ion-select interface="popover" required name="category" (ionChange)="populateSubCategory(expense.category)" [(ngModel)]="expense.category">
-                <ion-option [value]="cat" *ngFor="let cat of categories">{{cat | titlecase}}</ion-option>
+                <ion-option [value]="cat" *ngFor="let cat of categories">{{cat.title}}</ion-option>
               </ion-select>
             </ion-item>
             <ion-item *ngIf="showSubCategory">
