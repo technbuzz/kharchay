@@ -87,7 +87,7 @@ export class HomePage implements OnInit {
       price: this.expense.price,
       note: this.expense.note,
       category: this.expense.category,
-      subCategory: this.selectedSubCategory,
+      subCategory: this.showSubCategory ? this.selectedSubCategory : null,
       date: new Date(this.expense.date)
     }).then((docRef)=>{
       this.resetFields();
@@ -137,7 +137,7 @@ export class HomePage implements OnInit {
   }
 
   resetFields(){
-    this.expense.price = 0;
+    this.expense.price = null;
     this.expense.note = '';
   }
 
