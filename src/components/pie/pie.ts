@@ -20,7 +20,6 @@ export class PieComponent {
 
 
   constructor() {
-    console.log('Hello PieComponent Component');
   }
 
 }

@@ -81,9 +81,16 @@ export class SummaryChartPage {
     let chartData = []
     let chartLabels = [];
 
+    console.log({values});
+    
     const grouped = lodash.groupBy(values, 'category');
+    console.log({grouped});
+    
     lodash.forIn(grouped, (value, key, item) => {
       chartLabels.push(key.toUpperCase());
+      // console.log({key})
+      // console.log({value})
+      // console.log({item})
       chartData.push(lodash.reduce(
           value,(sum, n) => {
             return sum + Number(n.price);
@@ -95,6 +102,10 @@ export class SummaryChartPage {
     this.container.clear();
     const factory = this.resolver.resolveComponentFactory(PieComponent);
     const componentRef = this.container.createComponent(factory);
+
+    // console.log(chartLabels);
+    
+
     componentRef.instance.doughnutChartData = chartData;
     componentRef.instance.doughnutChartLabels = chartLabels;
   }
