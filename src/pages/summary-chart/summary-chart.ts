@@ -80,30 +80,29 @@ export class SummaryChartPage {
    
     let chartData = []
     let chartLabels = [];
-
+    let grouped;
     console.log({values});
-    
-    const grouped = lodash.groupBy(values, 'category');
+
+    // Previously for format like {category:'food'}
+    // grouped = lodash.groupBy(values, ('category.title'));
+
+    // Backward compat becuse new format is {category:{title:'food'}}
+    grouped = lodash.groupBy(values, (item)=>{return item.category.title ? item.category.title : item.category});
     console.log({grouped});
     
     lodash.forIn(grouped, (value, key, item) => {
       chartLabels.push(key.toUpperCase());
-      // console.log({key})
-      // console.log({value})
-      // console.log({item})
       chartData.push(lodash.reduce(
-          value,(sum, n) => {
-            return sum + Number(n.price);
-          },0))
-      console.log(key);
-      
+        value,(sum, n) => {
+          return sum + Number(n.price);
+        },0))
     });
 
     this.container.clear();
     const factory = this.resolver.resolveComponentFactory(PieComponent);
     const componentRef = this.container.createComponent(factory);
 
-    // console.log(chartLabels);
+    console.log(chartLabels);
     
 
     componentRef.instance.doughnutChartData = chartData;
