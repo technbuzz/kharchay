@@ -17,7 +17,7 @@
     <ion-list>
       <ion-item>
         <ion-label floating>Price</ion-label>
-        <ion-input required type="number" name="price" min="0" [(ngModel)]="expense.price"></ion-input>
+        <ion-input required type="text" name="price" (ionBlur)="calculate()" min="0" [(ngModel)]="expense.price"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Date</ion-label>
@@ -64,7 +64,7 @@
     <h2>{{this.currentMonth}} - {{total}}</h2>
     <ion-list>
       <ion-item-sliding *ngFor="let item of expenses | async">
-        <ion-item no-padding>
+        <ion-item no-padding (click)="showDetails(item)" [attr.text-wrap]="item.details ? true : null">
           <h2>{{item.price}}</h2>
           <!-- For backward compatibility -->
           <ion-badge *ngIf="item.category.title else oldTitle">{{item.category.title}}</ion-badge>

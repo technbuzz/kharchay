@@ -136,6 +136,23 @@ export class HomePage implements OnInit {
     this.navCtrl.push('SearchPage')
   }
 
+  public calculate(){
+    if(!this.expense.price) return;
+
+    const price = this.expense.price.toString().split('+');
+
+    // convert string to numbers
+    const numberPrice = price.map(item =>{
+      return parseInt(item)
+    });
+
+    // calculate prices
+    this.expense.price = numberPrice.reduce((prev, item) => {
+      
+      return prev + Number(item);
+    },0);
+  }
+
   resetFields(){
     this.expense.price = null;
     this.expense.note = '';
@@ -151,6 +168,7 @@ export class HomePage implements OnInit {
     
   }
   
+
   public subtractDay(){
     console.log('subractday');
     
@@ -158,6 +176,10 @@ export class HomePage implements OnInit {
     this.expenseDate.setValue(subDays(tempDate, 1).toISOString());
     console.log(this.expense.date);
     
+  }
+
+  public showDetails(item:IExpense){
+    item.details = !item.details;
   }
 
 }

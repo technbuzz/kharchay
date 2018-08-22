@@ -4,5 +4,6 @@ export interface IExpense {
   price: number,
   note: string,
   category: ICategory,
-  date: Date|any
+  date: Date|any,
+  details?: boolean
 }
