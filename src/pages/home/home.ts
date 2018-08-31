@@ -56,7 +56,7 @@ export class HomePage implements OnInit {
   ngOnInit(): void {
     this.expenses = this.expCollRef.valueChanges(); 
     this.expenses.forEach(values => {
-      this.total = values.reduce((prev, current, ) => {
+      this.total = values.reduce((prev, current) => {
         return prev + Number(current.price);
       }, 0)
     });
@@ -140,10 +140,9 @@ export class HomePage implements OnInit {
     if(!this.expense.price) return;
 
     const price = this.expense.price.toString().split('+');
-
     // convert string to numbers
     const numberPrice = price.map(item =>{
-      return parseInt(item)
+      return parseFloat(item)
     });
 
     // calculate prices
