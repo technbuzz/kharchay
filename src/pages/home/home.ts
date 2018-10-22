@@ -179,6 +179,7 @@ export class HomePage implements OnInit {
 
   public showDetails(item:IExpense){
     item.details = !item.details;
+    this.navCtrl.push('DetailsPage')
   }
 
 }
