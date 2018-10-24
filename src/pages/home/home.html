@@ -52,10 +52,8 @@
         <ion-input type="text" name="note" [(ngModel)]="expense.note"></ion-input>
       </ion-item>
 
-      <ion-item>
-        <input type="file" name="file" #fileInput (change)="chooseFile($event)">
-      </ion-item>
-      <img [src]="imgsrc | async">
+      <expense-image></expense-image>
+      
     </ion-list>
     <button margin-left type="submit" [disabled]="form.invalid" [ladda]="isWorking" ion-button color="primary">Add</button>
     <!-- <button type="button" [ladda]="false" *ngIf='isWorking' ion-button color="primary">Adding...</button> -->

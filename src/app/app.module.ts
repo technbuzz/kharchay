@@ -11,6 +11,7 @@ import { AngularFireStorageModule } from "angularfire2/storage";
 import { environment } from "../environments/environment";
 import { LaddaModule } from "angular2-ladda";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { ComponentsModule } from "../components/components.module";
 
 
 
@@ -26,6 +27,7 @@ import { HomePage } from '../pages/home/home';
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
+    ComponentsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(),
     AngularFireStorageModule,

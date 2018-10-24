@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, DateTime, AlertController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
-import { AngularFireStorage } from "angularfire2/storage";
 
 
 import { Observable } from 'rxjs/Observable';
@@ -26,24 +25,7 @@ import { ICategory } from '../../shared/category.interface';
 })
 export class HomePage implements OnInit {
 
-  selectedFiles: FileList;
-  file:File;
-  imgsrc;
 
-  chooseFile(event){
-    this.selectedFiles = event.target.files;
-    if(this.selectedFiles.item(0)){
-      this.uploadPic();
-    }
-  }
-
-  uploadPic(){
-    const file = this.selectedFiles.item(0);
-    const uniqueKey = `pic${Math.floor(Math.random() * 10000)}`
-    const uploadTask = this.storage.upload(`/receipts/${uniqueKey}`, file);
-
-    this.imgsrc = uploadTask.downloadURL();
-  }
   
   @ViewChild('expenseDate') expenseDate: DateTime;
   cdo = new Date();
@@ -72,7 +54,7 @@ export class HomePage implements OnInit {
   );
   expenses: Observable<Expense[]>;
   
-  constructor(public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl:AlertController, private storage: AngularFireStorage) {
+  constructor(public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl:AlertController) {
     Object.assign(this.categories, categories);
   }
   
