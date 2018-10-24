@@ -5,5 +5,6 @@ export interface IExpense {
   note: string,
   category: ICategory,
   date: Date|any,
-  details?: boolean
+  details?: boolean,
+  image: string
 }

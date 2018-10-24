@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, DateTime, AlertController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-
+import { LoadingController } from 'ionic-angular';
 
 
 import { Observable } from 'rxjs/Observable';
@@ -35,7 +35,8 @@ export class HomePage implements OnInit {
     price: null,
     note: '',
     category: null,
-    date: new Date().toISOString()
+    date: new Date().toISOString(),
+    image: ''
   };
   
   
@@ -54,7 +55,7 @@ export class HomePage implements OnInit {
   );
   expenses: Observable<Expense[]>;
   
-  constructor(public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl:AlertController) {
+  constructor(public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl:AlertController, public loadingCtrl: LoadingController) {
     Object.assign(this.categories, categories);
   }
   
@@ -84,10 +85,14 @@ export class HomePage implements OnInit {
 
 
   public addItem(form:NgForm){ 
-    console.log(this.expense);
-    console.log(this.selectedSubCategory);
     
     this.isWorking = true;
+    const loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present();
+
     this.expCollRef.add({
       price: this.expense.price,
       note: this.expense.note,
@@ -99,7 +104,8 @@ export class HomePage implements OnInit {
       this.isWorking = false;
       this.expCollRef.doc(docRef.id).update({
         id: docRef.id
-      })      
+      });
+      loader.dismiss();     
     }).catch((err)=>{
       this.isWorking = false;
       console.log(err);
