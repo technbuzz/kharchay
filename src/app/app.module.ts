@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AngularFireModule } from "angularfire2";
 import { AngularFirestoreModule } from "angularfire2/firestore";
+import { AngularFireStorageModule } from "angularfire2/storage";
 import { environment } from "../environments/environment";
 import { LaddaModule } from "angular2-ladda";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -27,6 +28,7 @@ import { HomePage } from '../pages/home/home';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(),
+    AngularFireStorageModule,
     IonicModule.forRoot(MyApp),
     LaddaModule.forRoot({
       style:'expand-right',
