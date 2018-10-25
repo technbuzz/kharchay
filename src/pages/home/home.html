@@ -65,7 +65,7 @@
   </form>
 
   <section padding>
-    <h2>{{this.currentMonth}} - {{total}}</h2>
+    <h2>{{this.currentMonth}} - {{total | number: '2.2-2'}}</h2>
     <ion-list>
       <ion-item-sliding *ngFor="let item of expenses | async">
         <ion-item no-padding detail-push (click)="showDetails(item)">
