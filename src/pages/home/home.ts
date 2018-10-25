@@ -18,6 +18,7 @@ import { Expense } from "./expense.model";
 import { categories } from "../../shared/categories";
 import { IExpense } from '../../shared/expense.interface';
 import { ICategory } from '../../shared/category.interface';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'page-home',
@@ -31,6 +32,7 @@ export class HomePage implements OnInit {
   cdo = new Date();
   currentMonth = format(new Date(), 'MMMM');
   startOfMonth = startOfMonth(this.cdo);
+  subscriptions: Subscription;
   expense:IExpense = {
     price: null,
     note: '',
@@ -89,9 +91,8 @@ export class HomePage implements OnInit {
     this.isWorking = true;
     this.events.publish('upload:image');
 
+    //FIXME: handle subscribtion
     this.events.subscribe('uploaded:image', ({imageName, imageUrl}) => {
-      console.log(imageName, imageUrl);
-      console.log('[Event] Pulishing upload event received');
       this.expCollRef.add({
         price: this.expense.price,
         note: this.expense.note,
@@ -106,11 +107,15 @@ export class HomePage implements OnInit {
         this.expCollRef.doc(docRef.id).update({
           id: docRef.id
         });
+
+        this.events.unsubscribe('uploaded:image');
       }).catch((err) => {
         this.isWorking = false;
         console.log(err);
+        this.events.unsubscribe('uploaded:image');
       })
-    })
+    });
+
   }
 
   public update(expense: Expense){

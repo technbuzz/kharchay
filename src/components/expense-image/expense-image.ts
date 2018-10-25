@@ -3,6 +3,7 @@ import { AngularFireStorage } from 'angularfire2/storage';
 import { Events, Loading } from 'ionic-angular';
 
 import { LoadingController } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'expense-image',
@@ -12,7 +13,7 @@ export class ExpenseImageComponent {
   selectedFiles: FileList;
   file: File;
   imgsrc;
-  subscriptions;
+  subscriptions: Subscription;
   loader: Loading;
 
   chooseFile(event) {
@@ -26,7 +27,7 @@ export class ExpenseImageComponent {
       const uploadTask = this.storage.upload(`/receipts/${uniqueKey}`, file);
 
       //FIXME: refactor subscription
-      uploadTask.downloadURL().subscribe(resp => {
+      this.subscriptions = uploadTask.downloadURL().subscribe(resp => {
         this.imgsrc = resp;
         this.events.publish('uploaded:image', {imageName: uniqueKey, imageUrl: resp});
         this.loader.dismiss().then(x => this.nullify());
@@ -54,5 +55,6 @@ export class ExpenseImageComponent {
   nullify() {
     this.selectedFiles = null;
     this.imgsrc = '';
+    this.subscriptions.unsubscribe();
   }
 }
