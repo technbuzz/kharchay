@@ -69,6 +69,10 @@
     <ion-list>
       <ion-item-sliding *ngFor="let item of expenses | async">
         <ion-item no-padding detail-push (click)="showDetails(item)" [attr.text-wrap]="item.details ? true : null">
+          <ion-avatar item-start *ngIf="item.image">
+            <img src="./assets/imgs/placeholder.png">
+
+          </ion-avatar>
           <h2>{{item.price}}</h2>
           <!-- For backward compatibility -->
           <ion-badge *ngIf="item.category.title else oldTitle">{{item.category.title}}</ion-badge>

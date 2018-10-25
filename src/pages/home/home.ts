@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, DateTime, AlertController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { LoadingController } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 
 
 import { Observable } from 'rxjs/Observable';
@@ -55,7 +56,7 @@ export class HomePage implements OnInit {
   );
   expenses: Observable<Expense[]>;
   
-  constructor(public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl:AlertController, public loadingCtrl: LoadingController) {
+  constructor(private events: Events, public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl:AlertController, public loadingCtrl: LoadingController) {
     Object.assign(this.categories, categories);
   }
   
@@ -87,29 +88,39 @@ export class HomePage implements OnInit {
   public addItem(form:NgForm){ 
     
     this.isWorking = true;
-    const loader = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
+    // const loader = this.loadingCtrl.create({
+    //   content: 'Please wait...'
+    // });
 
-    loader.present();
+    // loader.present();
 
-    this.expCollRef.add({
+    this.events.publish('upload:image');
+    this.events.subscribe('uploaded:image', (imgString) => {
+      console.log(imgString);
+      console.log('[Event] Pulishing upload event received');
+      this.expCollRef.add({
       price: this.expense.price,
       note: this.expense.note,
       category: this.expense.category,
       subCategory: this.showSubCategory ? this.selectedSubCategory : null,
-      date: new Date(this.expense.date)
+      date: new Date(this.expense.date),
+      image: imgString
     }).then((docRef)=>{
       this.resetFields();
       this.isWorking = false;
       this.expCollRef.doc(docRef.id).update({
         id: docRef.id
       });
-      loader.dismiss();     
+      // loader.dismiss();     
     }).catch((err)=>{
       this.isWorking = false;
       console.log(err);
     })
+    })
+
+
+
+    
   }
 
   public update(expense: Expense){
@@ -133,6 +144,7 @@ export class HomePage implements OnInit {
           text: 'Yes',
           handler: () => {
             console.log(item);
+            
             this.expCollRef.doc(item.id).delete();
           }
 

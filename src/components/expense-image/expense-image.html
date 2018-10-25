@@ -1,5 +1,4 @@
 <ion-item>
-
-        <input type="file" name="file" #fileInput (change)="chooseFile($event)">
-      </ion-item>
-      <img [src]="imgsrc | async" height="150">
+	<input type="file" name="file" #fileInput (change)="chooseFile($event)">
+</ion-item>
+<img [src]="imgsrc" height="150">
