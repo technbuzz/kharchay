@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, DateTime, AlertController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { LoadingController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 
 
@@ -56,7 +55,7 @@ export class HomePage implements OnInit {
   );
   expenses: Observable<Expense[]>;
   
-  constructor(private events: Events, public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl:AlertController, public loadingCtrl: LoadingController) {
+  constructor(private events: Events, public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl:AlertController) {
     Object.assign(this.categories, categories);
   }
   
@@ -88,11 +87,7 @@ export class HomePage implements OnInit {
   public addItem(form:NgForm){ 
     
     this.isWorking = true;
-    // const loader = this.loadingCtrl.create({
-    //   content: 'Please wait...'
-    // });
 
-    // loader.present();
 
     this.events.publish('upload:image');
     this.events.subscribe('uploaded:image', (imgString) => {
@@ -201,8 +196,7 @@ export class HomePage implements OnInit {
   }
 
   public showDetails(item:IExpense){
-    item.details = !item.details;
-    this.navCtrl.push('DetailsPage')
+    this.navCtrl.push('DetailsPage', {item})
   }
 
 }
