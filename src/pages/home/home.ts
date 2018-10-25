@@ -89,10 +89,10 @@ export class HomePage implements OnInit {
 
   public addItem(form: NgForm) {
     this.isWorking = true;
-    this.events.publish('upload:image');
-
+    
     //FIXME: handle subscribtion
     this.events.subscribe('uploaded:image', ({imageName, imageUrl}) => {
+      debugger;
       this.expCollRef.add({
         price: this.expense.price,
         note: this.expense.note,
@@ -107,7 +107,7 @@ export class HomePage implements OnInit {
         this.expCollRef.doc(docRef.id).update({
           id: docRef.id
         });
-
+        
         this.events.unsubscribe('uploaded:image');
       }).catch((err) => {
         this.isWorking = false;
@@ -115,7 +115,13 @@ export class HomePage implements OnInit {
         this.events.unsubscribe('uploaded:image');
       })
     });
-
+    
+    //Ideally we should pulish upload:image event and than a image upload 
+    // should happen and then listen for uploaded:image but in the case 
+    // when there is no image than every thing happens so fast the image upload
+    // component publishes before home component have enough time to subscribe
+    // to uploaded:image so event is missed
+    this.events.publish('upload:image');
   }
 
   public update(expense: Expense){

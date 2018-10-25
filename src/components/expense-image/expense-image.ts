@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Events, Loading } from 'ionic-angular';
 
@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: 'expense-image.html'
 })
 export class ExpenseImageComponent {
+  @ViewChild('fileInput') fileInput: ElementRef;
   selectedFiles: FileList;
   file: File;
   imgsrc;
@@ -34,26 +35,32 @@ export class ExpenseImageComponent {
       });
     }
   }
-
+  
   constructor(
     private storage: AngularFireStorage,
     public events: Events,
     public loadingCtrl: LoadingController
-  ) {}
-
-  ngOnInit() {
-    //FIXME: refactor subscription
-    this.events.subscribe('upload:image', () => {
-      this.loader = this.loadingCtrl.create({
-        content: 'Uploading Image, Please wait...'
+    ) {}
+    
+    ngOnInit() {
+      //FIXME: refactor subscription
+      this.events.subscribe('upload:image', () => {
+        debugger
+        if(!this.selectedFiles) {
+          this.events.publish('uploaded:image', {imageName: null, imageUrl: null});
+          return;
+        }
+        this.loader = this.loadingCtrl.create({
+          content: 'Uploading Image, Please wait...'
+        });
+        this.loader.present();
+        this.uploadPic();
       });
-      this.loader.present();
-      this.uploadPic();
-    });
-  }
+    }
 
   nullify() {
     this.selectedFiles = null;
+    this.fileInput.nativeElement.value = '';
     this.imgsrc = '';
     this.subscriptions.unsubscribe();
   }
