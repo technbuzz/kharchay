@@ -58,7 +58,7 @@ export class SummaryChartPage {
   }
 
   loadBasic(){
-    //TODO: Merge this function with getCurrentMonthStats
+    //FIXME: Merge this function with getCurrentMonthStats
     const basicStartMonth = startOfMonth(this.month);
     const basicEndMonth = endOfMonth(this.month);
 

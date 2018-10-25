@@ -1,21 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, DateTime, AlertController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { NgForm } from '@angular/forms';
 import { Events } from 'ionic-angular';
-
-
 import { Observable } from 'rxjs/Observable';
 
-import { Expense } from "./expense.model";
-import { categories } from "../../shared/categories";
-import { firestore } from 'firebase/app';
-import { NgForm } from '@angular/forms';
 
+import { AngularFireStorage } from 'angularfire2/storage';
 import format from 'date-fns/format';
 import addDays from 'date-fns/add_days';
 import subDays from 'date-fns/sub_days';
 import isAfter from 'date-fns/is_after';
 import startOfMonth from 'date-fns/start_of_month';
+
+
+import { Expense } from "./expense.model";
+import { categories } from "../../shared/categories";
 import { IExpense } from '../../shared/expense.interface';
 import { ICategory } from '../../shared/category.interface';
 
@@ -36,7 +36,8 @@ export class HomePage implements OnInit {
     note: '',
     category: null,
     date: new Date().toISOString(),
-    image: ''
+    imageName: '',
+    imageUrl: ''
   };
   
   
@@ -55,7 +56,7 @@ export class HomePage implements OnInit {
   );
   expenses: Observable<Expense[]>;
   
-  constructor(private events: Events, public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl:AlertController) {
+  constructor(private events: Events, public navCtrl: NavController, public afs: AngularFirestore, private alertCtrl: AlertController, private storage: AngularFireStorage) {
     Object.assign(this.categories, categories);
   }
   
@@ -84,38 +85,32 @@ export class HomePage implements OnInit {
 
 
 
-  public addItem(form:NgForm){ 
-    
+  public addItem(form: NgForm) {
     this.isWorking = true;
-
-
     this.events.publish('upload:image');
-    this.events.subscribe('uploaded:image', (imgString) => {
-      console.log(imgString);
+
+    this.events.subscribe('uploaded:image', ({imageName, imageUrl}) => {
+      console.log(imageName, imageUrl);
       console.log('[Event] Pulishing upload event received');
       this.expCollRef.add({
-      price: this.expense.price,
-      note: this.expense.note,
-      category: this.expense.category,
-      subCategory: this.showSubCategory ? this.selectedSubCategory : null,
-      date: new Date(this.expense.date),
-      image: imgString
-    }).then((docRef)=>{
-      this.resetFields();
-      this.isWorking = false;
-      this.expCollRef.doc(docRef.id).update({
-        id: docRef.id
-      });
-      // loader.dismiss();     
-    }).catch((err)=>{
-      this.isWorking = false;
-      console.log(err);
+        price: this.expense.price,
+        note: this.expense.note,
+        category: this.expense.category,
+        subCategory: this.showSubCategory ? this.selectedSubCategory : null,
+        date: new Date(this.expense.date),
+        imageName,
+        imageUrl
+      }).then((docRef) => {
+        this.resetFields();
+        this.isWorking = false;
+        this.expCollRef.doc(docRef.id).update({
+          id: docRef.id
+        });
+      }).catch((err) => {
+        this.isWorking = false;
+        console.log(err);
+      })
     })
-    })
-
-
-
-    
   }
 
   public update(expense: Expense){
@@ -141,6 +136,10 @@ export class HomePage implements OnInit {
             console.log(item);
             
             this.expCollRef.doc(item.id).delete();
+            //FIXME: Refactor this subscription
+            this.storage.ref(`receipts/${item.imageName}`).delete().subscribe(resp=>{
+              console.log('resource deleted', resp)
+            }, error => console.log(error))
           }
 
         }

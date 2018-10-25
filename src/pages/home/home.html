@@ -69,7 +69,7 @@
     <ion-list>
       <ion-item-sliding *ngFor="let item of expenses | async">
         <ion-item no-padding detail-push (click)="showDetails(item)">
-          <ion-avatar item-start *ngIf="item.image">
+          <ion-avatar item-start *ngIf="item.imageUrl">
             <img src="./assets/imgs/placeholder.png">
 
           </ion-avatar>

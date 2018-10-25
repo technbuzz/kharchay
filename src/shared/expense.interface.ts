@@ -6,5 +6,6 @@ export interface IExpense {
   category: ICategory,
   date: Date|any,
   details?: boolean,
-  image: string
+  imageName: string,
+  imageUrl: string
 }

@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-card *ngIf="expense">
-    <img [src]="expense.image || './assets/imgs/placeholder.png'"/>
+    <img [src]="expense.imageUrl || './assets/imgs/placeholder.png'" imageViewer="expense.imageUrl"/>
     <ion-card-content>
       <ion-card-title>
         <h1>

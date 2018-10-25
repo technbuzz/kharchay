@@ -25,10 +25,10 @@ export class ExpenseImageComponent {
       const uniqueKey = `pic${Math.floor(Math.random() * 10000)}`;
       const uploadTask = this.storage.upload(`/receipts/${uniqueKey}`, file);
 
-      //Todo: refactor subscription
+      //FIXME: refactor subscription
       uploadTask.downloadURL().subscribe(resp => {
         this.imgsrc = resp;
-        this.events.publish('uploaded:image', resp);
+        this.events.publish('uploaded:image', {imageName: uniqueKey, imageUrl: resp});
         this.loader.dismiss().then(x => this.nullify());
       });
     }
@@ -41,7 +41,7 @@ export class ExpenseImageComponent {
   ) {}
 
   ngOnInit() {
-    //Todo: refactor subscription
+    //FIXME: refactor subscription
     this.events.subscribe('upload:image', () => {
       this.loader = this.loadingCtrl.create({
         content: 'Uploading Image, Please wait...'
