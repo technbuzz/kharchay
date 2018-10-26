@@ -90,9 +90,12 @@ export class HomePage implements OnInit {
   public addItem(form: NgForm) {
     this.isWorking = true;
     
-    //FIXME: handle subscribtion
+    this.events.subscribe('uploading:cancelled', ()=>{
+      this.isWorking = false;
+      this.events.unsubscribe('uploading:cancelled')
+    })
+
     this.events.subscribe('uploaded:image', ({imageName, imageUrl}) => {
-      debugger;
       this.expCollRef.add({
         price: this.expense.price,
         note: this.expense.note,
@@ -206,7 +209,7 @@ export class HomePage implements OnInit {
   }
 
   public showDetails(item:IExpense){
-    this.navCtrl.push('DetailsPage', {item})
+    item.imageName && this.navCtrl.push('DetailsPage', {item})
   }
 
 }

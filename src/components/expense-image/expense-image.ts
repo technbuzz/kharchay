@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { Events, Loading } from 'ionic-angular';
+import { Events, Loading, AlertController } from 'ionic-angular';
 
 import { LoadingController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
@@ -17,29 +17,11 @@ export class ExpenseImageComponent {
   subscriptions: Subscription;
   loader: Loading;
 
-  chooseFile(event) {
-    this.selectedFiles = event.target.files;
-  }
-
-  uploadPic() {
-    if (this.selectedFiles.item(0)) {
-      const file = this.selectedFiles.item(0);
-      const uniqueKey = `pic${Math.floor(Math.random() * 10000)}`;
-      const uploadTask = this.storage.upload(`/receipts/${uniqueKey}`, file);
-
-      //FIXME: refactor subscription
-      this.subscriptions = uploadTask.downloadURL().subscribe(resp => {
-        this.imgsrc = resp;
-        this.events.publish('uploaded:image', {imageName: uniqueKey, imageUrl: resp});
-        this.loader.dismiss().then(x => this.nullify());
-      });
-    }
-  }
-  
   constructor(
     private storage: AngularFireStorage,
     public events: Events,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
     ) {}
     
     ngOnInit() {
@@ -58,10 +40,44 @@ export class ExpenseImageComponent {
       });
     }
 
+
+  chooseFile(event) {
+    this.selectedFiles = event.target.files;
+  }
+
+  uploadPic() {
+    if (this.selectedFiles.item(0)) {
+      const file = this.selectedFiles.item(0);
+      const uniqueKey = `pic${Math.floor(Math.random() * 10000)}`;
+      const uploadTask = this.storage.upload(`/receipts/${uniqueKey}`, file)
+
+      this.subscriptions = uploadTask.downloadURL().subscribe(resp => {
+        this.imgsrc = resp;
+        this.events.publish('uploaded:image', {imageName: uniqueKey, imageUrl: resp});
+        this.loader.dismiss().then(x => this.nullify());
+      }, error => {
+        
+        
+      });
+    }
+  }
+  
+  
   nullify() {
     this.selectedFiles = null;
     this.fileInput.nativeElement.value = '';
     this.imgsrc = '';
     this.subscriptions.unsubscribe();
+  }
+
+  handleUploadError(){
+    this.loader.dismissAll();
+
+        const alert = this.alertCtrl.create({
+          title: 'Error!',
+          subTitle: 'Something went wrong',
+          buttons: ['Ok']
+        })
+
   }
 }
