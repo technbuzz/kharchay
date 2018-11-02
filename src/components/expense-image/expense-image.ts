@@ -10,7 +10,8 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: 'expense-image.html'
 })
 export class ExpenseImageComponent {
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput')
+  fileInput: ElementRef;
   selectedFiles: FileList;
   file: File;
   imgsrc;
@@ -22,24 +23,25 @@ export class ExpenseImageComponent {
     public events: Events,
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController
-    ) {}
-    
-    ngOnInit() {
-      //FIXME: refactor subscription
-      this.events.subscribe('upload:image', () => {
-        debugger
-        if(!this.selectedFiles) {
-          this.events.publish('uploaded:image', {imageName: null, imageUrl: null});
-          return;
-        }
-        this.loader = this.loadingCtrl.create({
-          content: 'Uploading Image, Please wait...'
-        });
-        this.loader.present();
-        this.uploadPic();
-      });
-    }
+  ) {}
 
+  ngOnInit() {
+    //FIXME: refactor subscription
+    this.events.subscribe('upload:image', () => {
+      if (!this.selectedFiles) {
+        this.events.publish('uploaded:image', {
+          imageName: null,
+          imageUrl: null
+        });
+        return;
+      }
+      this.loader = this.loadingCtrl.create({
+        content: 'Uploading Image, Please wait...'
+      });
+      this.loader.present();
+      this.uploadPic();
+    });
+  }
 
   chooseFile(event) {
     this.selectedFiles = event.target.files;
@@ -49,20 +51,25 @@ export class ExpenseImageComponent {
     if (this.selectedFiles.item(0)) {
       const file = this.selectedFiles.item(0);
       const uniqueKey = `pic${Math.floor(Math.random() * 10000)}`;
-      const uploadTask = this.storage.upload(`/receipts/${uniqueKey}`, file)
+      const uploadTask = this.storage.upload(`/receipts/${uniqueKey}`, file);
 
-      this.subscriptions = uploadTask.downloadURL().subscribe(resp => {
-        this.imgsrc = resp;
-        this.events.publish('uploaded:image', {imageName: uniqueKey, imageUrl: resp});
-        this.loader.dismiss().then(x => this.nullify());
-      }, error => {
-        
-        
-      });
+      this.subscriptions = uploadTask.downloadURL().subscribe(
+        resp => {
+          this.imgsrc = resp;
+          this.events.publish('uploaded:image', {
+            imageName: uniqueKey,
+            imageUrl: resp
+          });
+          this.loader.dismiss().then(x => this.nullify());
+        },
+        error => {
+          this.handleUploadError();
+          console.log('Upload Task Failed', error);
+        }
+      );
     }
   }
-  
-  
+
   nullify() {
     this.selectedFiles = null;
     this.fileInput.nativeElement.value = '';
@@ -70,14 +77,16 @@ export class ExpenseImageComponent {
     this.subscriptions.unsubscribe();
   }
 
-  handleUploadError(){
+  handleUploadError() {
     this.loader.dismissAll();
 
-        const alert = this.alertCtrl.create({
-          title: 'Error!',
-          subTitle: 'Something went wrong',
-          buttons: ['Ok']
-        })
+    const alert = this.alertCtrl.create({
+      title: 'Error!',
+      subTitle: 'Something went wrong',
+      buttons: ['Ok']
+    });
 
+    alert.present();
+    this.events.publish('uploading:cancelled');
   }
 }
