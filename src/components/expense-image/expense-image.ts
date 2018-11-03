@@ -4,6 +4,7 @@ import { Events, Loading, AlertController } from 'ionic-angular';
 
 import { LoadingController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
+import { SwipeBackGesture } from 'ionic-angular/navigation/swipe-back';
 
 @Component({
   selector: 'expense-image',
@@ -45,6 +46,26 @@ export class ExpenseImageComponent {
 
   chooseFile(event) {
     this.selectedFiles = event.target.files;
+    this.renderFile(this.selectedFiles.item(0));
+  }
+
+  renderFile(file){
+    const reader = new FileReader();
+    reader.addEventListener('load', x => {
+      this.imgsrc = reader.result;
+      console.log(x)
+
+    })
+
+    if(file){
+      reader.readAsDataURL(file)
+    }
+
+  }
+
+  clearSelection(event:SwipeBackGesture){
+    this.nullify();
+    
   }
 
   uploadPic() {
@@ -74,7 +95,7 @@ export class ExpenseImageComponent {
     this.selectedFiles = null;
     this.fileInput.nativeElement.value = '';
     this.imgsrc = '';
-    this.subscriptions.unsubscribe();
+    this.subscriptions && this.subscriptions.unsubscribe();
   }
 
   handleUploadError() {

@@ -155,10 +155,10 @@ export class HomePage implements OnInit {
         {
           text: 'Yes',
           handler: () => {
-            console.log(item);
 
             this.expCollRef.doc(item.id).delete();
             //FIXME: Refactor this subscription
+            if(!item.imageName) return;
             this.storage
               .ref(`receipts/${item.imageName}`)
               .delete()
@@ -213,13 +213,5 @@ export class HomePage implements OnInit {
     let tempDate = this.expense.date;
     this.expenseDate.setValue(subDays(tempDate, 1).toISOString());
     console.log(this.expense.date);
-  }
-
-  public showDetails(item: IExpense) {
-    if (item.imageName) {
-      this.navCtrl.push('DetailsPage', { item });
-    } else {
-      item.details = !item.details;
-    }
   }
 }

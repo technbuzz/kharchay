@@ -49,22 +49,13 @@
 
   
   <ion-list padding-horizontal>
-      <h4>Total: {{total}}</h4>
-    <ion-item no-padding *ngFor="let item of expenses$ | async">
-      <h2>{{item.price}}</h2>
+      <h4>Total: {{total | number: '2.2-2'}}</h4>
 
-      <!-- For backward compatibility -->
-      <ion-badge *ngIf="item.category.title else oldTitle">{{item.category.title}}</ion-badge>
-      <ng-template #oldTitle>
-        <ion-badge>{{item.category}}</ion-badge>
-      </ng-template>
-      <!-- END For backward compatibility -->
-
-      <ion-badge *ngIf="item?.subCategory" color="danger">{{item?.subCategory}}</ion-badge>
-
-
-      <p>{{item.note}}</p>
-      <p item-end>{{item.date | date}}</p>
-    </ion-item>
+      <expense-item 
+      [expense]="item" 
+      (onDelete)="delete($event)"
+      [readonly]="true"
+      *ngFor="let item of expenses$ | async"></expense-item>
+   
   </ion-list>
 </ion-content>

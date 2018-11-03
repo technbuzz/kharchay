@@ -67,28 +67,11 @@
   <section padding>
     <h2>{{this.currentMonth}} - {{total | number: '2.2-2'}}</h2>
     <ion-list>
-      <ion-item-sliding *ngFor="let item of expenses | async">
-        <ion-item no-padding [attr.detail-push]="item.imageName" [attr.text-wrap]="item.details ? true : null" (click)="showDetails(item)">
-          <ion-avatar item-start *ngIf="item.imageUrl">
-            <img src="./assets/imgs/placeholder.png">
-          </ion-avatar>
-          <h2>{{item.price}}</h2>
-          <!-- For backward compatibility -->
-          <ion-badge *ngIf="item.category.title else oldTitle">{{item.category.title}}</ion-badge>
-          <ng-template #oldTitle>
-            <ion-badge>{{item.category}}</ion-badge>
-          </ng-template>
-          <!-- END For backward compatibility -->
-  
-          <ion-badge *ngIf="item?.subCategory" color="danger">{{item?.subCategory}}</ion-badge>
-          <p>{{item.note}}</p>
-          <p item-end>{{item.date | date:"E, MMM d, y"}}</p>
-        </ion-item>
-        <ion-item-options slide="right">
-          <button ion-button color="danger" (click)="delete(item)">Delete</button>
-        </ion-item-options>
-  
-      </ion-item-sliding>
+      <expense-item 
+      [expense]="item" 
+      (onDelete)="delete($event)"
+      *ngFor="let item of expenses | async"></expense-item>
+     
     </ion-list>
   </section>
 
