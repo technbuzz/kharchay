@@ -67,6 +67,10 @@ export class FilterPage {
   }
 
   public loadResults() {
+    if(!this.filter.startDate || !this.filter.endDate || !this.filter.category){
+      return
+    }
+
     this.loading = true;
     this.expRef = this.afs.collection('expense', ref =>
       ref
