@@ -21,7 +21,7 @@
       </ion-item>
       <ion-item>
         <ion-label floating>Date</ion-label>
-        <ion-datetime #expenseDate (swipeleft)="subtractDay()" (swiperight)="addDay()" name="date" displayFormat="MMM DDD, YYYY" pickerFormat="MMM DD, YYYY HH:mm"
+        <ion-datetime #expenseDate (swipeleft)="subtractDay()" (swiperight)="addDay()" name="date" displayFormat="DDDD MMMM DD" pickerFormat="MMM DD, YYYY HH:mm"
           [(ngModel)]="expense.date" [max]="maxDate"></ion-datetime>
       </ion-item>
       

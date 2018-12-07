@@ -20,7 +20,7 @@
     <ion-list *ngSwitchCase="'basic'" no-margin>
       <ion-item>
         <ion-label floating>Month</ion-label>
-        <ion-datetime (ionChange)="loadBasic()" name="month" displayFormat="MMM YYYY" pickerFormat="MMM YYYY"
+        <ion-datetime stepper (ionChange)="loadBasic()" name="month" displayFormat="MMM YYYY" pickerFormat="MMM YYYY"
           [(ngModel)]="filter.month"></ion-datetime>
       </ion-item>
     </ion-list>
@@ -29,18 +29,18 @@
     <ion-list *ngSwitchCase="'advanced'" no-margin>
       <ion-item>
         <ion-label floating>Start Date</ion-label>
-        <ion-datetime (ionChange)="loadResults()" name="startDate" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm"
+        <ion-datetime (ionChange)="loadResults()" name="startDate" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY"
           [(ngModel)]="filter.startDate"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label floating>End Date</ion-label>
-        <ion-datetime (ionChange)="loadResults()" name="endDate" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY HH:mm"
+        <ion-datetime (ionChange)="loadResults()" name="endDate" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY"
           [(ngModel)]="filter.endDate"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label floating>Choose Category</ion-label>
         <ion-select interface="popover" required name="category" [(ngModel)]="filter.category">
-          <ion-option [value]="cat" (ionSelect)="loadResults()" *ngFor="let cat of categories">{{cat.title}}</ion-option>
+          <ion-option [value]="cat" (ionSelect)="loadResults()" *ngFor="let cat of categories">{{cat.title | titlecase}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>
