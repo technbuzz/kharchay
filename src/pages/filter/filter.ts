@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, DateTime } from 'ionic-angular';
 import {
   AngularFirestoreCollection,
   AngularFirestore
@@ -8,13 +8,15 @@ import { Observable } from 'rxjs/Observable';
 import { Expense } from '../home/expense.model';
 import { categories } from '../../shared/categories';
 import { startOfMonth, endOfMonth } from 'date-fns';
+import { Stepper } from '../../shared/stepper';
 
 @IonicPage({})
 @Component({
   selector: 'page-filter',
   templateUrl: 'filter.html'
 })
-export class FilterPage {
+export class FilterPage extends Stepper {
+  @ViewChild(DateTime) expenseMonth: DateTime;
   loading: boolean = false;
   categories: any = [];
   searchType: string = 'basic';
@@ -22,7 +24,7 @@ export class FilterPage {
     startDate: '',
     endDate: '',
     category: '',
-    month: ''
+    month: new Date()
   };
 
   basic: string = '';
@@ -37,12 +39,13 @@ export class FilterPage {
     public navParams: NavParams,
     public afs: AngularFirestore
   ) {
+    super();
     Object.assign(this.categories, categories);
   }
 
-  
-
-  ionViewDidLoad() {}
+  ionViewDidLoad() {
+    // this.addMonth();
+  }
 
   public loadBasic() {
     const basicStartMonth = startOfMonth(this.filter.month);
@@ -62,8 +65,6 @@ export class FilterPage {
         return prev + Number(current.price);
       }, 0);
     });
-
-
   }
 
   public loadResults() {

@@ -204,7 +204,7 @@ export class HomePage implements OnInit {
     let nextDay = addDays(tempDate, 1);
 
     if (isAfter(nextDay, new Date())) return;
-    this.expenseDate.setValue(addDays(tempDate, 1).toISOString());
+    this.expenseDate.setValue(nextDay.toISOString());
   }
 
   public subtractDay() {

@@ -20,7 +20,14 @@
     <ion-list *ngSwitchCase="'basic'" no-margin>
       <ion-item>
         <ion-label floating>Month</ion-label>
-        <ion-datetime stepper (ionChange)="loadBasic()" name="month" displayFormat="MMM YYYY" pickerFormat="MMM YYYY"
+        <ion-datetime
+          #expenseMonth 
+          (ionChange)="loadBasic()" 
+          name="month" 
+          displayFormat="MMM YYYY" 
+          pickerFormat="MMM YYYY" 
+          (swipeRight)="addMonth(filter.month, expenseMonth)"
+          (swipeLeft)="subMonth(filter.month, expenseMonth)"
           [(ngModel)]="filter.month"></ion-datetime>
       </ion-item>
     </ion-list>

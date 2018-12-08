@@ -9,7 +9,6 @@ import { DirectivesModule } from '../../directives/directives.module';
     FilterPage,
   ],
   imports: [
-    DirectivesModule,
     ComponentsModule,
     IonicPageModule.forChild(FilterPage),
   ],

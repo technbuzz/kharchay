@@ -11,7 +11,16 @@
   <ion-list>
     <ion-item>
       <ion-label stacked>Month</ion-label>
-      <ion-datetime (ionChange)="loadBasic()" name="month" displayFormat="MMM YYYY" pickerFormat="MMM YYYY" [(ngModel)]="month" placeholder="Select Month"></ion-datetime>
+      <ion-datetime 
+      #expenseMonth
+      (ionChange)="loadBasic()" 
+      name="month" 
+      displayFormat="MMM YYYY" 
+      pickerFormat="MMM YYYY" 
+      [(ngModel)]="month" 
+      (swipeRight)="addMonth(month, expenseMonth)"
+      (swipeLeft)="subMonth(month, expenseMonth)"
+      placeholder="Select Month"></ion-datetime>
     </ion-item>
   </ion-list>
   <!-- <p *ngIf="loading else view">Loading...</p> -->

@@ -9,16 +9,17 @@ import { Expense } from '../home/expense.model';
 import { startOfMonth, endOfMonth } from 'date-fns';
 import * as lodash from 'lodash';
 import { PieComponent } from '../../components/pie/pie';
+import { Stepper } from '../../shared/stepper';
 
 @IonicPage()
 @Component({
   selector: 'page-summary-chart',
   templateUrl: 'summary-chart.html'
 })
-export class SummaryChartPage {
+export class SummaryChartPage extends Stepper {
   @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
   loading: boolean = true;
-  month = '';
+  month = new Date();
   expRef: AngularFirestoreCollection<any>;
   expenses$: Observable<Expense[]>;
 
@@ -33,6 +34,7 @@ export class SummaryChartPage {
     private afs: AngularFirestore,
     private resolver: ComponentFactoryResolver
   ) {
+    super();
   }
   
   ionViewDidLoad() {
