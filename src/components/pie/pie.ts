@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'pie',
-  templateUrl: 'pie.html'
+  templateUrl: 'pie.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PieComponent {
 
