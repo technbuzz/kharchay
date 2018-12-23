@@ -6,7 +6,7 @@
     [options]="donutOptions"
     [labels]="doughnutChartLabels" 
     [chartType]="doughnutChartType" 
-    
+    (chartClick)="chartClicked.emit($event, item)"
   ></canvas>
   </div>
 

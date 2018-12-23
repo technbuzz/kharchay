@@ -7,7 +7,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Expense } from '../home/expense.model';
 import { startOfMonth, endOfMonth } from 'date-fns';
-import * as lodash from 'lodash';
+import { groupBy, forIn, reduce } from 'lodash';
 import { PieComponent } from '../../components/pie/pie';
 import { Stepper } from '../../shared/stepper';
 
@@ -89,12 +89,12 @@ export class SummaryChartPage extends Stepper {
     // grouped = lodash.groupBy(values, ('category.title'));
 
     // Backward compat becuse new format is {category:{title:'food'}}
-    grouped = lodash.groupBy(values, (item)=>{return item.category.title ? item.category.title : item.category});
+    grouped = groupBy(values, (item)=>{return item.category.title ? item.category.title : item.category});
     console.log({grouped});
     
-    lodash.forIn(grouped, (value, key, item) => {
+    forIn(grouped, (value, key, item) => {
       chartLabels.push(key.toUpperCase());
-      chartData.push(lodash.reduce(
+      chartData.push(reduce(
         value,(sum, n) => {
           return sum + Number(n.price);
         },0))
@@ -109,5 +109,10 @@ export class SummaryChartPage extends Stepper {
 
     componentRef.instance.doughnutChartData = chartData;
     componentRef.instance.doughnutChartLabels = chartLabels;
+    componentRef.instance.chartClicked.subscribe((event, item) => {
+      console.log(event);
+      console.log(item);
+      
+    })
   }
 }
