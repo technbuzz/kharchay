@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, HostListener } from '@angular/core';
+import { Directive } from '@angular/core';
 
 /**
  * Generated class for the StepperDirective directive.
@@ -29,11 +29,11 @@ export class StepperDirective {
   // https://stackoverflow.com/questions/35728451/using-mobile-events-in-angular2
   // }
 
-  constructor(private el:ElementRef, private renderer: Renderer2) {
-    console.log('Hello StepperDirective Directive');
-    console.log(el.nativeElement);
+  // constructor(private el:ElementRef, private renderer: Renderer2) {
+    // console.log('Hello StepperDirective Directive');
+    // console.log(el.nativeElement);
     
-  }
+  // }
 
 
 

@@ -4,7 +4,6 @@ import { SummaryChartPage } from './summary-chart';
 
 
 import { CommonModule } from '@angular/common';
-import { PieComponent } from '../../components/pie/pie';
 import { ComponentsModule } from '../../components/components.module';
 
 
