@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { IExpense } from '../../shared/expense.interface';
 import { NavController } from 'ionic-angular';
 
