@@ -45,7 +45,7 @@ $colors: (
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
+$toast-ios-background: color($colors, danger);
 
 
 
@@ -53,7 +53,7 @@ $colors: (
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 $item-md-detail-push-show: true;
-
+$toast-md-background: color($colors, danger);
 
 
 // App Windows Variables

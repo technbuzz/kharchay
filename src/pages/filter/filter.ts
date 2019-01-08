@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, DateTime } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, DateTime, ToastController } from 'ionic-angular';
 import {
   AngularFirestoreCollection,
   AngularFirestore
@@ -7,7 +7,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Expense } from '../home/expense.model';
 import { categories } from '../../shared/categories';
-import { startOfMonth, endOfMonth } from 'date-fns';
+import { startOfMonth, endOfMonth, isBefore } from 'date-fns';
 import { Stepper } from '../../shared/stepper';
 
 @IonicPage({})
@@ -37,7 +37,8 @@ export class FilterPage extends Stepper {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public afs: AngularFirestore
+    public afs: AngularFirestore,
+    public toastCtrl: ToastController
   ) {
     super();
     Object.assign(this.categories, categories);
@@ -69,6 +70,17 @@ export class FilterPage extends Stepper {
 
   public loadResults() {
     if(!this.filter.startDate || !this.filter.endDate || !this.filter.category){
+      return
+    }
+
+    if(isBefore(this.filter.endDate, this.filter.startDate)){
+      
+      this.toastCtrl.create({
+        message: 'Note: Start Date cannot be set in the past.',
+        position: 'bottom',
+        showCloseButton: true
+      }).present();
+
       return
     }
 
