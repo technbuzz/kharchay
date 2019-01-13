@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { NavController, DateTime, AlertController } from 'ionic-angular';
 import {
   AngularFirestore,
@@ -7,6 +7,8 @@ import {
 import { NgForm } from '@angular/forms';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { distinctUntilKeyChanged } from "rxjs/operators";
 
 import { AngularFireStorage } from 'angularfire2/storage';
 import format from 'date-fns/format';
@@ -14,20 +16,23 @@ import addDays from 'date-fns/add_days';
 import subDays from 'date-fns/sub_days';
 import isAfter from 'date-fns/is_after';
 import startOfMonth from 'date-fns/start_of_month';
+import { Flip } from "number-flip";
 
 import { Expense } from './expense.model';
 import { categories } from '../../shared/categories';
 import { IExpense } from '../../shared/expense.interface';
 import { ICategory } from '../../shared/category.interface';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   @ViewChild('expenseDate')
   expenseDate: DateTime;
+
+  @ViewChild('flip', {read: ElementRef}) private flipTotal: ElementRef;
+
   cdo = new Date();
   currentMonth = format(new Date(), 'MMMM');
   startOfMonth = startOfMonth(this.cdo);
@@ -68,11 +73,36 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     this.expenses = this.expCollRef.valueChanges();
-    this.expenses.forEach(values => {
-      this.total = values.reduce((prev, current) => {
-        return prev + Number(current.price);
-      }, 0);
-    });
+        
+    this.expenses.pipe(distinctUntilKeyChanged('price'))
+    .subscribe((values) => {
+      console.log(values);
+      
+      new Promise((resolve, reject) => {
+        this.total = values.reduce((prev, current, index, array) => {
+          if(index === array.length - 1) resolve('😎');
+          return prev + Number(current.price);
+        }, 0);
+      }).then(resolve => {
+        this.flip(Math.round(this.total));        
+      }) //Promise
+    })//forEach
+
+
+  }
+  flipAnim: any = '';
+  flip(to:number){
+    if(!this.flipAnim){
+      this.flipAnim = new Flip({
+        node: this.flipTotal.nativeElement,
+        from: 9999,
+        duration: 3
+      })
+    }
+
+    this.flipAnim.flipTo({
+      to
+    })
   }
 
   ionViewDidLoad() {
@@ -213,5 +243,9 @@ export class HomePage implements OnInit {
     let tempDate = this.expense.date;
     this.expenseDate.setValue(subDays(tempDate, 1).toISOString());
     console.log(this.expense.date);
+  }
+
+  ngOnDestroy(){
+
   }
 }

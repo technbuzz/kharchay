@@ -65,7 +65,9 @@
   </form>
 
   <section padding>
-    <h2>{{this.currentMonth}} - {{total | number: '2.2-2'}}</h2>
+    <header>
+      <h2 padding-right>{{this.currentMonth}} </h2> <h2 #flip></h2>
+    </header>
     <ion-list>
       <expense-item 
       [expense]="item" 
