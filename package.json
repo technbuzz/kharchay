@@ -8,10 +8,13 @@
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
+    "ionic:build:prod": "npm run ionic:build -- --prod",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
     "serve": "ionic serve",
-    "start": "node server.js"
+    "start": "node server.js",
+    "heroku-prebuild":"npm run ionic:build:prod",
+    "heroku-postbuild":"node server.js"
   },
   "dependencies": {
     "@angular/animations": "5.0.1",
