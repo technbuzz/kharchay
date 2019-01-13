@@ -3,6 +3,8 @@
  * more info on how to use sw-toolbox to custom configure your service worker.
  */
 
+const SWVersion = 0.1;
+
 
 'use strict';
 importScripts('./build/sw-toolbox.js');
@@ -10,6 +12,9 @@ importScripts('./build/sw-toolbox.js');
 self.toolbox.options.cache = {
   name: 'ionic-cache'
 };
+
+console.log(SWVersion);
+
 
 // pre-cache our key assets
 self.toolbox.precache(
