@@ -13,8 +13,8 @@
     "ionic:serve": "ionic-app-scripts serve",
     "serve": "ionic serve",
     "start": "node server.js",
-    "heroku-prebuild":"npm run ionic:build:prod",
-    "heroku-postbuild":"node server.js"
+    "heroku-prebuild": "npm run ionic:build:prod",
+    "heroku-postbuild": "node server.js"
   },
   "dependencies": {
     "@angular/animations": "5.0.1",
@@ -50,7 +50,7 @@
     "lodash": "^4.17.10",
     "morgan": "^1.9.1",
     "ng2-charts": "^1.6.0",
-    "number-flip": "^1.0.28",
+    "number-flip": "1.0.28",
     "rxjs": "5.5.10",
     "sw-toolbox": "3.6.0",
     "typescript": "2.4.2",
