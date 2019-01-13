@@ -13,8 +13,8 @@
     "ionic:serve": "ionic-app-scripts serve",
     "serve": "ionic serve",
     "start": "node server.js",
-    "heroku-prebuild": "npm run ionic:build:prod",
-    "heroku-postbuild": "node server.js"
+    "heroku-prebuild": "",
+    "heroku-postbuild": "npm run ionic:build:prod && node server.js"
   },
   "dependencies": {
     "@angular/animations": "5.0.1",
