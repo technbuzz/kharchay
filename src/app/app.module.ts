@@ -12,7 +12,6 @@ import { environment } from "../environments/environment";
 import { LaddaModule } from "angular2-ladda";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ComponentsModule } from "../components/components.module";
-import { IonicImageViewerModule } from 'ionic-img-viewer';
 
 
 
@@ -27,7 +26,6 @@ import { HomePage } from '../pages/home/home';
   imports: [
     BrowserModule,
     FormsModule,
-    IonicImageViewerModule,
     BrowserAnimationsModule,
     ComponentsModule,
     AngularFireModule.initializeApp(environment.firebase),
