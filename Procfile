@@ -1,1 +1,1 @@
-web:  npm run build && npm start
+web:  npm run ionic:build:prod && npm start
