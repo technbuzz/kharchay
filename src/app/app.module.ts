@@ -15,6 +15,7 @@ import { ComponentsModule } from "../components/components.module";
 
 
 
+
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
@@ -29,7 +30,7 @@ import { HomePage } from '../pages/home/home';
     BrowserAnimationsModule,
     ComponentsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     AngularFireStorageModule,
     IonicModule.forRoot(MyApp),
     LaddaModule.forRoot({
