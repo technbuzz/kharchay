@@ -3,7 +3,7 @@
  * more info on how to use sw-toolbox to custom configure your service worker.
  */
 
-const SWVersion = 0.1;
+const SWVersion = 0.2;
 
 
 'use strict';
