@@ -8,7 +8,6 @@ import { NgForm } from '@angular/forms';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { distinctUntilKeyChanged } from "rxjs/operators";
 
 import { AngularFireStorage } from 'angularfire2/storage';
 import format from 'date-fns/format';
@@ -74,10 +73,8 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.expenses = this.expCollRef.valueChanges();
         
-    this.expenses.pipe(distinctUntilKeyChanged('price'))
-    .subscribe((values) => {
-      console.log(values);
-      
+    this.expenses.subscribe((values) => {
+      // debugger
       new Promise((resolve, reject) => {
         this.total = values.reduce((prev, current, index, array) => {
           if(index === array.length - 1) resolve('😎');
@@ -96,7 +93,8 @@ export class HomePage implements OnInit, OnDestroy {
       this.flipAnim = new Flip({
         node: this.flipTotal.nativeElement,
         from: 9999,
-        duration: 3
+        duration: 3,
+        delay: 3
       })
     }
 

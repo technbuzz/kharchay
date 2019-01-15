@@ -76,7 +76,7 @@ export class FilterPage extends Stepper {
     if(isBefore(this.filter.endDate, this.filter.startDate)){
       
       this.toastCtrl.create({
-        message: 'Note: Start Date cannot be set in the past.',
+        message: 'Note: Start Date cannot be set in the future.',
         position: 'bottom',
         showCloseButton: true
       }).present();
