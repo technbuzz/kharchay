@@ -1,7 +1,10 @@
-<ion-header>
+<ion-header #secret>
   <ion-toolbar color="primary">
-    <ion-title>Kharchay 💳</ion-title>
+    <ion-title >Kharchay</ion-title>
     <ion-buttons end>
+      <button ion-button icon-only (click)="navCtrl.push('SettingsPage')" margin-right>
+        <ion-icon name="settings"></ion-icon>
+      </button>
       <button ion-button icon-only (click)="navCtrl.push('FilterPage')" margin-right>
         <ion-icon name="funnel"></ion-icon>
       </button>
@@ -15,10 +18,17 @@
 <ion-content>
   <form action="" (ngSubmit)="addItem(form)" #form="ngForm">
     <ion-list>
-      <ion-item>
+      <ion-item *ngIf="dynamicPricing else staticPricing" >
         <ion-label floating>Price</ion-label>
         <ion-input required type="text" name="price" (ionBlur)="calculate()" min="0" [(ngModel)]="expense.price"></ion-input>
       </ion-item>
+      <ng-template #staticPricing>
+        <ion-item >
+          <ion-label floating>Price</ion-label>
+          <ion-input required type="number" name="price" min="0" [(ngModel)]="expense.price"></ion-input>
+        </ion-item>
+      </ng-template>
+
       <ion-item>
         <ion-label floating>Date</ion-label>
         <ion-datetime #expenseDate (swipeleft)="subtractDay()" (swiperight)="addDay()" name="date" displayFormat="DDDD MMMM DD" pickerFormat="MMM DD, YYYY HH:mm"

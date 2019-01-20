@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { NavController, DateTime, AlertController } from 'ionic-angular';
+import { NavController, DateTime, AlertController, Header } from 'ionic-angular';
 import {
   AngularFirestore,
   AngularFirestoreCollection
@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { buffer, throttleTime, map, filter } from "rxjs/operators";
 
 import { AngularFireStorage } from 'angularfire2/storage';
 import format from 'date-fns/format';
@@ -21,6 +22,7 @@ import { Expense } from './expense.model';
 import { categories } from '../../shared/categories';
 import { IExpense } from '../../shared/expense.interface';
 import { ICategory } from '../../shared/category.interface';
+import { SettingsProvider } from '../../providers/settings/settings';
 
 @Component({
   selector: 'page-home',
@@ -30,12 +32,14 @@ export class HomePage implements OnInit, OnDestroy {
   @ViewChild('expenseDate')
   expenseDate: DateTime;
 
+  @ViewChild(Header) header: Header;
+
   @ViewChild('flip', {read: ElementRef}) private flipTotal: ElementRef;
 
   cdo = new Date();
   currentMonth = format(new Date(), 'MMMM');
   startOfMonth = startOfMonth(this.cdo);
-  subscriptions: Subscription;
+  subscriptions: Subscription = new Subscription();
   expense: IExpense = {
     price: null,
     note: '',
@@ -53,6 +57,8 @@ export class HomePage implements OnInit, OnDestroy {
   total: number = 0;
   isWorking: boolean = false;
   maxDate: string;
+  flipAnim: any = '';
+  dynamicPricing: boolean = true;
 
   expCollRef: AngularFirestoreCollection<any> = this.afs.collection(
     'expense',
@@ -65,7 +71,8 @@ export class HomePage implements OnInit, OnDestroy {
     public navCtrl: NavController,
     public afs: AngularFirestore,
     private alertCtrl: AlertController,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private settingsProvider: SettingsProvider
   ) {
     Object.assign(this.categories, categories);
   }
@@ -74,7 +81,6 @@ export class HomePage implements OnInit, OnDestroy {
     this.expenses = this.expCollRef.valueChanges();
         
     this.expenses.subscribe((values) => {
-      // debugger
       new Promise((resolve, reject) => {
         this.total = values.reduce((prev, current, index, array) => {
           if(index === array.length - 1) resolve('😎');
@@ -85,9 +91,9 @@ export class HomePage implements OnInit, OnDestroy {
       }) //Promise
     })//forEach
 
-
+    
   }
-  flipAnim: any = '';
+
   flip(to:number){
     if(!this.flipAnim){
       this.flipAnim = new Flip({
@@ -105,6 +111,32 @@ export class HomePage implements OnInit, OnDestroy {
 
   ionViewDidLoad() {
     this.maxDate = this.cdo.toISOString().split('T')[0];
+
+    // clickStream for Settings Page
+    const secretElement = this.header.getElementRef().nativeElement;
+    const clickStream = Observable.fromEvent(secretElement, 'click');
+    this.subscriptions.add(clickStream
+    .pipe(
+      buffer(clickStream.pipe(throttleTime(500))),
+      map(arr => arr.length),
+      filter(len => len === 4)
+      )
+    .subscribe(resp => {
+      console.log('clicked', resp);
+      this.navCtrl.push('SettingsPage')
+    }))
+
+
+    this.settingsProvider.getConfig().subscribe(initialSettings => {
+      this.dynamicPricing = initialSettings;
+    })
+
+
+    // dynamicPricing event management
+    this.events.subscribe('dynamic:Pricing', (boolean) => {
+      console.log('dynamicPricing event', boolean);
+      this.dynamicPricing = boolean;
+    })
   }
 
   populateSubCategory(category: ICategory) {
@@ -244,6 +276,6 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-
+    // (this.subscriptions) && this.subscriptions.unsubscribe();
   }
 }

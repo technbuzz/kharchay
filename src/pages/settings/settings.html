@@ -1,0 +1,17 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Settings</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label>Dynamic Pricing</ion-label>
+      <ion-toggle checked="false" [(ngModel)]="dynamicPricing" (ionChange)="updateTextMode()"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>
