@@ -23,6 +23,7 @@ import { categories } from '../../shared/categories';
 import { IExpense } from '../../shared/expense.interface';
 import { ICategory } from '../../shared/category.interface';
 import { SettingsProvider } from '../../providers/settings/settings';
+import { Scheduler } from 'rxjs';
 
 @Component({
   selector: 'page-home',
@@ -117,7 +118,7 @@ export class HomePage implements OnInit, OnDestroy {
     const clickStream = Observable.fromEvent(secretElement, 'click');
     this.subscriptions.add(clickStream
     .pipe(
-      buffer(clickStream.pipe(throttleTime(500))),
+      buffer(clickStream.pipe(throttleTime(600, Scheduler.async, {leading: false, trailing: true}))),
       map(arr => arr.length),
       filter(len => len === 4)
       )
