@@ -1,8 +1,14 @@
 page-home {
-  header{
+  header {
     display: flex;
-    h2{
+    h2 {
       margin-top: 0;
     }
+  }
+
+  .expand-action {
+    font-size: 1.5rem;
+    display: inline-flex;
+    align-self: flex-end;
   }
 }

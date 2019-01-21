@@ -18,54 +18,58 @@
 <ion-content>
   <form action="" (ngSubmit)="addItem(form)" #form="ngForm">
     <ion-list>
-      <ion-item *ngIf="dynamicPricing else staticPricing" >
+      <ion-item  >
         <ion-label floating>Price</ion-label>
-        <ion-input required type="text" name="price" (ionBlur)="calculate()" min="0" [(ngModel)]="expense.price"></ion-input>
+          <ion-input *ngIf="dynamicPricing else staticPricing" required type="text" name="price" (ionBlur)="calculate()" min="0" [(ngModel)]="expense.price"></ion-input>
+          
+          <ng-template #staticPricing>
+              <ion-input required type="number" name="price" min="0" [(ngModel)]="expense.price"></ion-input>
+          </ng-template>
+          
+
+        <button class="expand-action" item-end ion-button color="dark" clear type="button" (click)="toggleExpand()">
+          <ion-icon [name]="this.expanded ? 'arrow-up' : 'arrow-down'"></ion-icon>
+        </button>
       </ion-item>
-      <ng-template #staticPricing>
-        <ion-item >
-          <ion-label floating>Price</ion-label>
-          <ion-input required type="number" name="price" min="0" [(ngModel)]="expense.price"></ion-input>
+
+      <ng-container *ngIf="expanded">
+        <ion-item>
+          <ion-label floating>Date</ion-label>
+          <ion-datetime #expenseDate (swipeleft)="subtractDay()" (swiperight)="addDay()" name="date" displayFormat="DDDD MMMM DD" pickerFormat="MMM DD, YYYY HH:mm"
+            [(ngModel)]="expense.date" [max]="maxDate"></ion-datetime>
         </ion-item>
-      </ng-template>
-
-      <ion-item>
-        <ion-label floating>Date</ion-label>
-        <ion-datetime #expenseDate (swipeleft)="subtractDay()" (swiperight)="addDay()" name="date" displayFormat="DDDD MMMM DD" pickerFormat="MMM DD, YYYY HH:mm"
-          [(ngModel)]="expense.date" [max]="maxDate"></ion-datetime>
-      </ion-item>
-      
-
-      <ion-grid no-padding>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label floating>Choose Category</ion-label>
-              <ion-select interface="popover" required name="category" (ionChange)="populateSubCategory(expense.category)" [(ngModel)]="expense.category">
-                <ion-option [value]="cat" *ngFor="let cat of categories">{{cat.title | titlecase}}</ion-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
-          <ion-col *ngIf="showSubCategory">
-            <ion-item >
-              <ion-label floating>Choose Sub Category</ion-label>
-              <ion-select interface="popover" required name="subCategory" [(ngModel)]="selectedSubCategory">
-                <ion-option [value]="subCat" *ngFor="let subCat of subCategories">{{subCat | titlecase}}</ion-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-      <ion-item>
-        <ion-label floating>Note</ion-label>
-        <ion-input type="text" name="note" [(ngModel)]="expense.note"></ion-input>
-      </ion-item>
-
-      <expense-image></expense-image>
+  
+        <ion-grid no-padding>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label floating>Choose Category</ion-label>
+                <ion-select interface="popover" required name="category" (ionChange)="populateSubCategory(expense.category)" [(ngModel)]="expense.category">
+                  <ion-option [value]="cat" *ngFor="let cat of categories">{{cat.title | titlecase}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col *ngIf="showSubCategory">
+              <ion-item >
+                <ion-label floating>Choose Sub Category</ion-label>
+                <ion-select interface="popover" required name="subCategory" [(ngModel)]="selectedSubCategory">
+                  <ion-option [value]="subCat" *ngFor="let subCat of subCategories">{{subCat | titlecase}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+  
+        <ion-item>
+          <ion-label floating>Note</ion-label>
+          <ion-input type="text" name="note" [(ngModel)]="expense.note"></ion-input>
+        </ion-item>
+  
+        <expense-image></expense-image>
+      </ng-container>
       
     </ion-list>
-    <button margin-left type="submit" [disabled]="form.invalid" [ladda]="isWorking" ion-button color="primary">Add</button>
+    <button margin-left type="submit" [disabled]="form.invalid || !expanded" [ladda]="isWorking" ion-button color="primary">Add</button>
     <!-- <button type="button" [ladda]="false" *ngIf='isWorking' ion-button color="primary">Adding...</button> -->
     <button margin-right ion-button color="secondary" float-end (click)="navCtrl.push('SummaryChartPage')" type="button">Show Chart</button>
 

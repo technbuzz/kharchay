@@ -59,6 +59,8 @@ export class HomePage implements OnInit, OnDestroy {
   isWorking: boolean = false;
   maxDate: string;
   flipAnim: any = '';
+
+  expanded: boolean = true;
   dynamicPricing: boolean = true;
 
   expCollRef: AngularFirestoreCollection<any> = this.afs.collection(
@@ -238,6 +240,10 @@ export class HomePage implements OnInit, OnDestroy {
 
   public search() {
     this.navCtrl.push('SearchPage');
+  }
+  
+  toggleExpand(){
+    this.expanded = !this.expanded;
   }
 
   public calculate() {
