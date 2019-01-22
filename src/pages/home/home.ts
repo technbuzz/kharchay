@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { NavController, DateTime, AlertController, Header } from 'ionic-angular';
+import { NavController, DateTime, AlertController } from 'ionic-angular';
 import {
   AngularFirestore,
   AngularFirestoreCollection
@@ -8,7 +8,6 @@ import { NgForm } from '@angular/forms';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { buffer, throttleTime, map, filter } from "rxjs/operators";
 
 import { AngularFireStorage } from 'angularfire2/storage';
 import format from 'date-fns/format';
@@ -23,7 +22,6 @@ import { categories } from '../../shared/categories';
 import { IExpense } from '../../shared/expense.interface';
 import { ICategory } from '../../shared/category.interface';
 import { SettingsProvider } from '../../providers/settings/settings';
-import { Scheduler } from 'rxjs';
 
 @Component({
   selector: 'page-home',
@@ -32,8 +30,6 @@ import { Scheduler } from 'rxjs';
 export class HomePage implements OnInit, OnDestroy {
   @ViewChild('expenseDate')
   expenseDate: DateTime;
-
-  @ViewChild(Header) header: Header;
 
   @ViewChild('flip', {read: ElementRef}) private flipTotal: ElementRef;
 
@@ -113,25 +109,9 @@ export class HomePage implements OnInit, OnDestroy {
   ionViewDidLoad() {
     this.maxDate = this.cdo.toISOString().split('T')[0];
 
-    // clickStream for Settings Page
-    const secretElement = this.header.getElementRef().nativeElement;
-    const clickStream = Observable.fromEvent(secretElement, 'click');
-    this.subscriptions.add(clickStream
-    .pipe(
-      buffer(clickStream.pipe(throttleTime(600, Scheduler.async, {leading: false, trailing: true}))),
-      map(arr => arr.length),
-      filter(len => len === 4)
-      )
-    .subscribe(resp => {
-      console.log('clicked', resp);
-      this.navCtrl.push('SettingsPage')
-    }))
-
-
     this.settingsProvider.getConfig().subscribe(initialSettings => {
       this.dynamicPricing = initialSettings;
     })
-
 
     // dynamicPricing event management
     this.events.subscribe('dynamic:Pricing', (boolean) => {
@@ -173,7 +153,7 @@ export class HomePage implements OnInit, OnDestroy {
           this.isWorking = false;
           this.expCollRef.doc(docRef.id).update({
             id: docRef.id
-          });
+          })
 
           this.events.unsubscribe('uploaded:image');
         })
@@ -234,10 +214,6 @@ export class HomePage implements OnInit, OnDestroy {
       ]
     });
     confirm.present();
-  }
-
-  public search() {
-    this.navCtrl.push('SearchPage');
   }
 
   public calculate() {

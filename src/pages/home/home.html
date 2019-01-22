@@ -1,14 +1,11 @@
-<ion-header #secret>
-  <ion-toolbar color="primary">
+<ion-header  >
+  <ion-toolbar color="primary" click-stream>
     <ion-title >Kharchay</ion-title>
     <ion-buttons end>
-      <!-- <button ion-button icon-only (click)="navCtrl.push('SettingsPage')" margin-right>
-        <ion-icon name="settings"></ion-icon>
-      </button> -->
       <button ion-button icon-only (click)="navCtrl.push('FilterPage')" margin-right>
         <ion-icon name="funnel"></ion-icon>
       </button>
-      <button ion-button icon-only (click)="search()">
+      <button ion-button icon-only (click)="navCtrl.push('SearchPage')">
         <ion-icon name="search"></ion-icon>
       </button>
     </ion-buttons>
