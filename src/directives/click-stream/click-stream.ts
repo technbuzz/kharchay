@@ -1,8 +1,7 @@
-import { Directive, ElementRef } from '@angular/core';
-import { Header } from 'ionic-angular';
+import { Directive } from '@angular/core';
+import { Header, NavController } from 'ionic-angular';
 import { Observable, Subscription, Scheduler } from 'rxjs';
 import { throttleTime, buffer, map, filter } from 'rxjs/operators';
-import { NavController } from 'ionic-angular/navigation/nav-controller';
 
 @Directive({
   selector: '[click-stream]' // Attribute selector
