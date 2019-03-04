@@ -19,13 +19,13 @@ import { ComponentsModule } from "../components/components.module";
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { SettingsProvider } from '../providers/settings/settings';
-import { ClickStreamDirective } from '../directives/click-stream/click-stream';
+// import { ClickStreamDirective } from '../directives/click-stream/click-stream';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    ClickStreamDirective
+    HomePage
+    // ClickStreamDirective
   ],
   imports: [
     BrowserModule,
