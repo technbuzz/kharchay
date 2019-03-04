@@ -24,7 +24,7 @@ export class FilterPage extends Stepper {
     startDate: '',
     endDate: '',
     category: '',
-    month: new Date()
+    month: new Date().toISOString()
   };
 
   basic: string = '';
@@ -46,6 +46,7 @@ export class FilterPage extends Stepper {
 
   ionViewDidLoad() {
     // this.addMonth();
+    this.loadBasic();
   }
 
   public loadBasic() {

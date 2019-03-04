@@ -19,7 +19,7 @@ import { Stepper } from '../../shared/stepper';
 export class SummaryChartPage extends Stepper {
   @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
   loading: boolean = true;
-  month = new Date();
+  month = new Date().toISOString();
   expRef: AngularFirestoreCollection<any>;
   expenses$: Observable<Expense[]>;
 
@@ -38,29 +38,10 @@ export class SummaryChartPage extends Stepper {
   }
   
   ionViewDidLoad() {
-    this.getCurrentMonthStats();
-  }
-
-  getCurrentMonthStats() {
-    const basicStartMonth = startOfMonth(new Date());
-    const basicEndMonth = endOfMonth(new Date());
-
-    this.expRef = this.afs.collection('expense', ref =>
-      ref
-      .where('date', '>=', basicStartMonth)
-      .where('date', '<=', basicEndMonth)
-    );
-  
-  // Finding Total
-    this.expenses$ = this.expRef.valueChanges();
-    this.expenses$.forEach(values => {
-      this.generateDataForChart(values);
-    });
-    this.loading = false;
+    this.loadBasic();
   }
 
   loadBasic(){
-    //FIXME: Merge this function with getCurrentMonthStats
     const basicStartMonth = startOfMonth(this.month);
     const basicEndMonth = endOfMonth(this.month);
 
@@ -109,10 +90,10 @@ export class SummaryChartPage extends Stepper {
 
     componentRef.instance.doughnutChartData = chartData;
     componentRef.instance.doughnutChartLabels = chartLabels;
-    componentRef.instance.chartClicked.subscribe((event, item) => {
-      console.log(event);
-      console.log(item);
+    // componentRef.instance.chartClicked.subscribe((event, item) => {
+    //   console.log(event);
+    //   console.log(item);
       
-    })
+    // })
   }
 }
