@@ -16,17 +16,17 @@ import { ComponentsModule } from "../components/components.module";
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { SettingsProvider } from '../providers/settings/settings';
-import { ClickStreamDirective } from '../directives/click-stream/click-stream';
+import { DirectivesModule } from '../directives/directives.module';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    ClickStreamDirective
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    DirectivesModule,
     BrowserAnimationsModule,
     ComponentsModule,
     AngularFireModule.initializeApp(environment.firebase),

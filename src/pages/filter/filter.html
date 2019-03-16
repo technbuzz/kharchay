@@ -36,18 +36,18 @@
     <ion-list *ngSwitchCase="'advanced'" no-margin>
       <ion-item>
         <ion-label floating>Start Date</ion-label>
-        <ion-datetime (ionChange)="loadResults()" name="startDate" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY"
+        <ion-datetime (ionChange)="loadResults({})" name="startDate" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY"
           [(ngModel)]="filter.startDate"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label floating>End Date</ion-label>
-        <ion-datetime (ionChange)="loadResults()" name="endDate" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY"
+        <ion-datetime (ionChange)="loadResults({})" name="endDate" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY"
           [(ngModel)]="filter.endDate"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label floating>Choose Category</ion-label>
         <ion-select interface="popover" required name="category" [(ngModel)]="filter.category">
-          <ion-option [value]="cat" (ionSelect)="loadResults()" *ngFor="let cat of categories">{{cat.title | titlecase}}</ion-option>
+          <ion-option [value]="cat" (ionSelect)="loadResults({})" *ngFor="let cat of categories">{{cat.title | titlecase}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>
@@ -60,7 +60,6 @@
 
       <expense-item 
       [expense]="item" 
-      (onDelete)="delete($event)"
       [readonly]="true"
       *ngFor="let item of expenses$ | async"></expense-item>
    

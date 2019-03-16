@@ -17,14 +17,13 @@ import { Stepper } from '../../shared/stepper';
 })
 export class FilterPage extends Stepper {
   @ViewChild(DateTime) expenseMonth: DateTime;
-  loading: boolean = false;
   categories: any = [];
   searchType: string = 'basic';
   filter = {
     startDate: '',
     endDate: '',
     category: '',
-    month: new Date()
+    month: new Date().toISOString()
   };
 
   basic: string = '';
@@ -46,13 +45,15 @@ export class FilterPage extends Stepper {
 
   ionViewDidLoad() {
     // this.addMonth();
+    this.loadBasic();
   }
 
   public loadBasic() {
     const basicStartMonth = startOfMonth(this.filter.month);
     const basicEndMonth = endOfMonth(this.filter.month);
 
-    this.loading = true;
+    this.loadResults({startDate: basicStartMonth.toISOString(), endDate: basicEndMonth.toISOString()})
+
     this.expRef = this.afs.collection('expense', ref =>
       ref
         .where('date', '>=', basicStartMonth)
@@ -60,15 +61,15 @@ export class FilterPage extends Stepper {
     );
 
     // Finding Total
-    this.expenses$ = this.expRef.valueChanges();
-    this.expenses$.forEach(values => {
-      this.total = values.reduce((prev, current) => {
-        return prev + Number(current.price);
-      }, 0);
-    });
+    this.findTotal();
   }
 
-  public loadResults() {
+  public loadResults({startDate, endDate}) {
+    if(startDate && endDate) {
+      this.filter.startDate = startDate;
+      this.filter.endDate = endDate;
+    }
+
     if(!this.filter.startDate || !this.filter.endDate || !this.filter.category){
       return
     }
@@ -84,7 +85,6 @@ export class FilterPage extends Stepper {
       return
     }
 
-    this.loading = true;
     this.expRef = this.afs.collection('expense', ref =>
       ref
         .where('date', '>=', new Date(this.filter.startDate))
@@ -93,12 +93,15 @@ export class FilterPage extends Stepper {
     );
 
     // Finding Total
+    this.findTotal();
+  }
+  
+  findTotal(){
     this.expenses$ = this.expRef.valueChanges();
     this.expenses$.forEach(values => {
       this.total = values.reduce((prev, current) => {
         return prev + Number(current.price);
       }, 0);
-    });
-    this.loading = false;
+    })
   }
 }
