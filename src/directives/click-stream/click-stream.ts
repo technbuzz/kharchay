@@ -11,8 +11,6 @@ export class ClickStreamDirective {
   subscriptions = new Subscription();
 
   constructor(private el: Header, private navCtrl: NavController) {
-    console.log('Hello ClickStreamDirective Directive');
-    console.log(this.el.getElementRef().nativeElement);
     const secretElement = this.el.getElementRef().nativeElement;
 
     const clickStream = Observable.fromEvent(secretElement, 'click');

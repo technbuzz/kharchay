@@ -13,9 +13,6 @@ import { LaddaModule } from "angular2-ladda";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ComponentsModule } from "../components/components.module";
 
-
-
-
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { SettingsProvider } from '../providers/settings/settings';
