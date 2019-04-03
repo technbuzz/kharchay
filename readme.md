@@ -6,7 +6,7 @@ I have so much in my mind to take this app further. But as this app is reference
 
 I did thought of creating a seperate branch or any other solution using exiating repo. But this would make it different to bring people on board.
 
-## Don't Need To Worry
+## No Need To Worry
 
 I will be maintaining this project with Ionic 3.
 
