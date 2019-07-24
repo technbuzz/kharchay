@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "source-map-explorer": "^1.7.0",
-    "webpack-bundle-analyzer": "^3.1.0"
+    "webpack-bundle-analyzer": "^3.3.2"
   },
   "description": "An Ionic project",
   "cordova": {
