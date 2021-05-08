@@ -48,7 +48,7 @@
     "ionic-angular": "^3.9.2",
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "3.0.0",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.21",
     "morgan": "^1.9.1",
     "ng2-charts": "^1.6.0",
     "number-flip": "1.0.28",
