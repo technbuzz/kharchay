@@ -35,7 +35,7 @@
     "angular2-ladda": "^1.2.3",
     "angularfire2": "^5.0.0-rc.6",
     "body-parser": "^1.18.3",
-    "chart.js": "^2.7.2",
+    "chart.js": "^2.9.4",
     "cordova-android": "6.4.0",
     "cordova-plugin-device": "^1.1.7",
     "cordova-plugin-ionic-webview": ">=2.2.0",
